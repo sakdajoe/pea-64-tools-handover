@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>แบบฟอร์มส่งมอบเครื่องมือมาตรฐาน 64 รายการ - กฟภ.</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt & Sarabun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pea: {
+                            purple: '#5B1A6C',
+                            dark: '#3D0F49',
+                            light: '#F5ECF8',
+                            gold: '#D49E2A',
+                            goldLight: '#FBF4E4'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* ซ่อน scrollbar แนวนอนแต่ยังเลื่อนได้ */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* สไตล์สำหรับการพิมพ์ PDF / Print */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background: white !important;
+                box-shadow: none !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 10mm 8mm;
+            }
+            table.official-form {
+                page-break-inside: auto;
+            }
+            table.official-form tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            table.official-form thead {
+                display: table-header-group;
+            }
+        }
+
+        .sig-canvas {
+            touch-action: none;
+            width: 100%;
+            height: 110px;
+            background-color: #ffffff;
+            border: 1.5px dashed #9ca3af;
+            border-radius: 0.75rem;
+            cursor: crosshair;
+            display: block;
+        }
+        .sig-inline-wrap {
+            position: relative;
+            display: inline-block;
+            min-width: 140px;
+            height: 28px;
+            vertical-align: bottom;
+            text-align: center;
+        }
+        .sig-inline-img {
+            max-height: 30px;
+            max-width: 130px;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .sig-manager-img {
+            max-height: 36px;
+            max-width: 170px;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        /* ตารางแบบฟอร์มราชการ */
+        .official-form {
+            font-family: 'Sarabun', sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100%;
+            font-size: 11px;
+            line-height: 1.25;
+            color: #000;
+        }
+        .official-form th, .official-form td {
+            border: 1px solid #000;
+            padding: 3px 4px;
+            vertical-align: middle;
+            word-break: normal;
+            overflow-wrap: normal;
+        }
+        .official-form th {
+            white-space: nowrap;
+        }
+        .official-form th.col-std {
+            white-space: normal;
+            min-width: 48px;
+        }
+        .official-form td.col-unit {
+            white-space: nowrap;
+        }
+        .official-form th {
+            background-color: #f3f4f6;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="pb-24 text-gray-800">
+    <!-- Header App Bar -->
+    <header class="bg-gradient-to-r from-pea-dark via-pea-purple to-[#742589] text-white sticky top-0 z-40 shadow-md no-print">
+        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-pea-gold flex items-center justify-center text-pea-dark font-bold shadow-inner shrink-0">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base font-bold leading-tight">ส่งมอบเครื่องมือรถกระเช้า 4 ตัน</h1>
+                    <p class="text-[11px] text-purple-200">กฟภ. เขต 2 ภาคใต้ (64 รายการมาตรฐาน)</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-1.5">
+                <button type="button" onclick="loadDayData(true)" title="ดึงข้อมูลล่าสุดจาก Google Sheet" class="text-[11px] bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-full border border-white/20 flex items-center gap-1 transition active:scale-95">
+                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                    <span id="header-status-badge">พร้อมบันทึก</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 hidden transition-all duration-300 no-print">
+        <div class="bg-gray-900 text-white px-4 py-2.5 rounded-full shadow-lg flex items-center space-x-2 text-sm">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-green-400"></i>
+            <span id="toast-message">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+        </div>
+    </div>
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto px-3 sm:px-4 pt-4">
+        <!-- ================= TAB 1: FORM INPUT ================= -->
+        <section id="tab-form" class="space-y-4">
+            
+            <!-- Shift Progress Status Card -->
+            <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-purple-100">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-pea-purple flex items-center gap-1">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i> สถานะการลงข้อมูลประจำวันที่เลือก
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <span id="saved-shifts-count" class="text-xs font-medium text-gray-500">บันทึกแล้ว 0/3 ช่วงเวลา</span>
+                        <button type="button" onclick="loadDayData(true)" class="text-[11px] text-pea-purple hover:text-pea-dark font-medium underline">รีเฟรช</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="quickSelectShift('1')" id="shift-pill-1" class="p-2 rounded-xl border text-left transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold">ช่วงที่ 1</span>
+                            <span id="shift-icon-1" class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        </div>
+                        <div class="text-[10px] text-gray-500 mt-0.5">00.30 - 08.30</div>
+                    </button>
+                    <button type="button" onclick="quickSelectShift('2')" id="shift-pill-2" class="p-2 rounded-xl border text-left transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold">ช่วงที่ 2</span>
+                            <span id="shift-icon-2" class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        </div>
+                        <div class="text-[10px] text-gray-500 mt-0.5">08.30 - 16.30</div>
+                    </button>
+                    <button type="button" onclick="quickSelectShift('3')" id="shift-pill-3" class="p-2 rounded-xl border text-left transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold">ช่วงที่ 3</span>
+                            <span id="shift-icon-3" class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        </div>
+                        <div class="text-[10px] text-gray-500 mt-0.5">16.30 - 00.30</div>
+                    </button>
+                </div>
+            </div>
+            <!-- Section 1: Header Details -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3.5">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                    <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-4 h-4 text-pea-gold"></i>
+                        1. ข้อมูลทั่วไปและช่วงเวลาเข้าเวร
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- การไฟฟ้าส่วนภูมิภาค -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">การไฟฟ้าส่วนภูมิภาค (สาขา)</label>
+                        <select id="input-branch" onchange="handleCustomSelect('branch')" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-branch" placeholder="พิมพ์ชื่อสาขา กฟภ..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                    <!-- ประจำวันที่ -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ประจำวันที่</label>
+                        <input type="date" id="input-date" onchange="loadDayData()" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        <p id="thai-date-preview" class="text-[11px] text-pea-purple mt-1 font-medium"></p>
+                    </div>
+                    <!-- ประจำรถ -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ประจำรถ</label>
+                        <select id="input-vehicle-type" onchange="handleCustomSelect('vehicle-type')" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-vehicle-type" placeholder="ระบุประเภทรถ..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                    <!-- หมายเลขทะเบียน -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">หมายเลขทะเบียน</label>
+                        <select id="input-license" onchange="handleCustomSelect('license'); loadDayData();" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-license" onchange="loadDayData()" placeholder="ระบุหมายเลขทะเบียน..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                    <!-- ช่วงเวลาเข้าเวร -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ช่วงเวลาเข้าเวร (Shift)</label>
+                        <select id="input-shift" onchange="onShiftChange()" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                            <option value="1">ช่วงที่ 1 เวลา 00.30 - 08.30 น.</option>
+                            <option value="2">ช่วงที่ 2 เวลา 08.30 - 16.30 น.</option>
+                            <option value="3">ช่วงที่ 3 เวลา 16.30 - 00.30 น.</option>
+                        </select>
+                    </div>
+                    <!-- ผู้ส่งมอบ -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ชื่อผู้ส่งมอบ</label>
+                        <select id="input-sender" onchange="handleCustomSelect('sender')" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-sender" placeholder="พิมพ์ชื่อ-นามสกุลผู้ส่งมอบ..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                    <!-- ผู้รับมอบ -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ชื่อผู้รับมอบ</label>
+                        <select id="input-receiver" onchange="handleCustomSelect('receiver')" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-receiver" placeholder="พิมพ์ชื่อ-นามสกุลผู้รับมอบ..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                    <!-- ผจก.ลงนาม -->
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">ผจก.ลงนาม (ผู้จัดการการไฟฟ้าสาขา)</label>
+                        <select id="input-manager" onchange="handleCustomSelect('manager')" class="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:border-pea-purple focus:bg-white focus:outline-none">
+                        </select>
+                        <input type="text" id="custom-manager" placeholder="พิมพ์ชื่อผู้จัดการ..." class="hidden mt-2 w-full rounded-xl border border-pea-purple bg-purple-50/40 px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                </div>
+            </div>
+            <!-- Section 2: 64 Tools Checklist -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                    <div>
+                        <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5">
+                            <i data-lucide="wrench" class="w-4 h-4 text-pea-gold"></i>
+                            2. รายการเครื่องมือมาตรฐาน (64 รายการ)
+                        </h2>
+                        <p class="text-[11px] text-gray-500 mt-0.5">ตั้งค่าเริ่มต้นตามจำนวนมาตรฐานแล้ว แก้ไขเฉพาะรายการที่เปลี่ยนแปลง</p>
+                    </div>
+                    <button type="button" onclick="resetToStandard()" class="text-xs bg-pea-goldLight text-amber-900 border border-amber-300 hover:bg-amber-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> ตั้งค่าเป็นมาตรฐานทั้งหมด
+                    </button>
+                </div>
+                <!-- Summary Counters -->
+                <div class="grid grid-cols-3 gap-2 bg-gray-50 p-2.5 rounded-xl border border-gray-200/70 text-center">
+                    <div>
+                        <div class="text-[10px] text-gray-500">รายการทั้งหมด</div>
+                        <div class="text-sm font-bold text-gray-800">64 <span class="text-[10px] font-normal">รายการ</span></div>
+                    </div>
+                    <div class="border-x border-gray-200">
+                        <div class="text-[10px] text-gray-500">ครบตามมาตรฐาน</div>
+                        <div id="stat-normal" class="text-sm font-bold text-emerald-600">64</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-500">ไม่ครบ / เปลี่ยนแปลง</div>
+                        <div id="stat-diff" class="text-sm font-bold text-rose-600">0</div>
+                    </div>
+                </div>
+                <!-- Search & Category Filter -->
+                <div class="space-y-2">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="search-tool" oninput="renderToolsList()" placeholder="ค้นหาชื่อเครื่องมือ หรือลำดับที่..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 text-sm focus:border-pea-purple focus:outline-none">
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap gap-2 no-scrollbar pb-1" id="category-tabs">
+                        <button type="button" onclick="setCategoryFilter('all')" data-cat="all" class="cat-btn active shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-pea-purple text-white">ทั้งหมด (64)</button>
+                        <button type="button" onclick="setCategoryFilter('1')" data-cat="1" class="cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">หมวด 1 PPE (6)</button>
+                        <button type="button" onclick="setCategoryFilter('2')" data-cat="2" class="cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">หมวด 2 ความปลอดภัย (13)</button>
+                        <button type="button" onclick="setCategoryFilter('3')" data-cat="3" class="cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">หมวด 3 ปฏิบัติงาน (38)</button>
+                        <button type="button" onclick="setCategoryFilter('4')" data-cat="4" class="cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">หมวด 4 สนับสนุน (6)</button>
+                        <button type="button" onclick="setCategoryFilter('5')" data-cat="5" class="cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">หมวด 5 ทดสอบ (1)</button>
+                    </div>
+                </div>
+                <!-- Tools List Container -->
+                <div id="tools-container" class="space-y-2.5 pt-1">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+            <!-- Section 3: Live Signature Pad -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3.5">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-2">
+                    <div>
+                        <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5">
+                            <i data-lucide="pen-tool" class="w-4 h-4 text-pea-gold"></i>
+                            3. วาดลายเซ็นสดบนหน้าจอ (ผู้ส่งมอบ / ผู้รับมอบ / ผจก.)
+                        </h2>
+                        <p class="text-[11px] text-gray-500 mt-0.5">เซ็นด้วยนิ้วบนมือถือ/แท็บเล็ต หรือเมาส์ ลายเซ็นจะแสดงในรายงาน PDF, Excel และ Word อัตโนมัติ</p>
+                    </div>
+                    <button type="button" onclick="clearAllSignatures()" class="text-xs bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 font-medium px-2.5 py-1 rounded-xl flex items-center gap-1 transition">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> ล้างทั้งหมด
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- ลายเซ็นผู้ส่งมอบ -->
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-800">ลายเซ็นผู้ส่งมอบ (ประจำช่วงที่เลือก)</span>
+                            <button type="button" onclick="clearSignaturePad('sender')" class="text-[11px] text-rose-600 hover:underline font-medium">ล้างลายเซ็น</button>
+                        </div>
+                        <canvas id="sig-canvas-sender" class="sig-canvas"></canvas>
+                        <div class="text-[10px] text-gray-500">ใช้สำหรับช่อง "ลงชื่อ............ผู้ส่งมอบ" ของช่วงเวลาที่กำลังเลือก</div>
+                    </div>
+
+                    <!-- ลายเซ็นผู้รับมอบ -->
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-gray-800">ลายเซ็นผู้รับมอบ (ประจำช่วงที่เลือก)</span>
+                            <button type="button" onclick="clearSignaturePad('receiver')" class="text-[11px] text-rose-600 hover:underline font-medium">ล้างลายเซ็น</button>
+                        </div>
+                        <canvas id="sig-canvas-receiver" class="sig-canvas"></canvas>
+                        <div class="text-[10px] text-gray-500">ใช้สำหรับช่อง "ลงชื่อ............ผู้รับมอบ" ของช่วงเวลาที่กำลังเลือก</div>
+                    </div>
+
+                    <!-- ลายเซ็น ผจก.ลงนาม -->
+                    <div class="sm:col-span-2 bg-purple-50/40 p-3 rounded-xl border border-purple-200/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-pea-dark">ลายเซ็น ผจก.ลงนาม (ประจำวันที่เลือก)</span>
+                            <button type="button" onclick="clearSignaturePad('manager')" class="text-[11px] text-rose-600 hover:underline font-medium">ล้างลายเซ็น</button>
+                        </div>
+                        <canvas id="sig-canvas-manager" class="sig-canvas"></canvas>
+                        <div class="text-[10px] text-gray-500">ใช้สำหรับช่อง "ลงชื่อ............................................................ผจก.ลงนาม" ด้านล่างแบบฟอร์ม</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Action Button -->
+            <div class="pt-2 pb-4">
+                <button type="button" onclick="saveCurrentShift()" class="w-full bg-gradient-to-r from-pea-purple to-pea-dark hover:opacity-95 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2 text-base transition active:scale-[0.99]">
+                    <i data-lucide="save" class="w-5 h-5 text-pea-gold"></i>
+                    <span id="save-btn-text">บันทึกข้อมูลช่วงที่ 1</span>
+                </button>
+            </div>
+        </section>
+        <!-- ================= TAB 2: REPORT PREVIEW & EXPORT ================= -->
+        <section id="tab-report" class="hidden space-y-4">
+            
+            <!-- Export Actions Bar -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3 no-print">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-sm font-bold text-pea-purple">ส่งออกรายงานแบบฟอร์มมาตรฐาน</h2>
+                        <p class="text-xs text-gray-500">รวมข้อมูลทั้ง 3 ช่วงเวลาไว้ในตารางเดียวกัน</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="exportPDF()" class="bg-rose-600 hover:bg-rose-700 text-white py-2.5 px-2 rounded-xl font-medium text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>พิมพ์ / PDF</span>
+                    </button>
+                    <button type="button" onclick="exportExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-2 rounded-xl font-medium text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                        <span>ไฟล์ Excel (.xls)</span>
+                    </button>
+                    <button type="button" onclick="exportWord()" class="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-2 rounded-xl font-medium text-xs flex flex-col sm:flex-row items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>ไฟล์ Word (.doc)</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Official Document Preview Wrapper (No Horizontal Scrollbar) -->
+            <div class="bg-white rounded-2xl p-2 sm:p-5 shadow-sm border border-gray-200 overflow-x-hidden">
+                <div id="print-area" class="w-full max-w-full bg-white text-black">
+                    <!-- Rendered Official Form Table -->
+                </div>
+            </div>
+        </section>
+        <!-- ================= TAB 3: SETTINGS / DROPDOWNS ================= -->
+        <section id="tab-settings" class="hidden space-y-4">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+                <h2 class="text-base font-bold text-pea-purple flex items-center gap-2">
+                    <i data-lucide="settings" class="w-5 h-5 text-pea-gold"></i>
+                    จัดการตัวเลือกในระบบ (Dropdown)
+                </h2>
+                <p class="text-xs text-gray-500 mt-1">เพิ่มหรือลบรายชื่อสาขา รถ ทะเบียน และรายชื่อพนักงาน เพื่อให้เลือกใช้งานได้สะดวก</p>
+            </div>
+            <!-- Cloud Sync (Google Sheet + Apps Script Web App) -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-purple-200 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-pea-dark flex items-center gap-1.5">
+                            <i data-lucide="cloud-upload" class="w-4 h-4 text-pea-purple"></i>
+                            0. เชื่อมต่อ Google Sheet อัตโนมัติ (Apps Script Web App URL)
+                        </h3>
+                        <p class="text-[11px] text-gray-500 mt-0.5">เมื่อวาง Web App URL แล้ว ทุกครั้งที่กด "บันทึกข้อมูลช่วงที่ 1–3" ระบบจะบันทึกในเครื่องและส่งขึ้น Google Sheet อัตโนมัติ พร้อมดึงข้อมูลล่าสุดมาแสดงแบบเรียลไทม์</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <input type="url" id="cloud-webapp-url" placeholder="https://script.google.com/macros/s/....../exec" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-xs sm:text-sm focus:border-pea-purple focus:outline-none">
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="saveCloudWebAppUrl()" class="bg-pea-purple hover:bg-pea-dark text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition">บันทึก URL</button>
+                        <button type="button" onclick="testCloudConnection()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition">ทดสอบส่งข้อมูล</button>
+                        <button type="button" onclick="loadDayData(true)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition">ดึงข้อมูลล่าสุดจากชีต</button>
+                    </div>
+                    <p id="cloud-sync-status" class="text-[11px] text-gray-500"></p>
+                </div>
+            </div>
+
+            <!-- Manage Branches -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <h3 class="text-sm font-bold text-gray-800">1. รายชื่อการไฟฟ้าส่วนภูมิภาค (สาขา)</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-branch" placeholder="เช่น การไฟฟ้าส่วนภูมิภาคสาขา..." class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-pea-purple focus:outline-none">
+                    <button type="button" onclick="addOption('branches', 'new-branch')" class="bg-pea-purple text-white px-4 py-2 rounded-xl text-sm font-medium">เพิ่ม</button>
+                </div>
+                <div id="list-branches" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <!-- Manage Vehicle Types -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <h3 class="text-sm font-bold text-gray-800">2. ประเภทรถยนต์ปฏิบัติงาน</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-vehicle" placeholder="เช่น รถยนต์กระเช้าแก้ไฟ 4 ตัน" class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-pea-purple focus:outline-none">
+                    <button type="button" onclick="addOption('vehicleTypes', 'new-vehicle')" class="bg-pea-purple text-white px-4 py-2 rounded-xl text-sm font-medium">เพิ่ม</button>
+                </div>
+                <div id="list-vehicleTypes" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <!-- Manage License Plates -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <h3 class="text-sm font-bold text-gray-800">3. หมายเลขทะเบียนรถ</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-license" placeholder="เช่น กข 1234 พังงา" class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-pea-purple focus:outline-none">
+                    <button type="button" onclick="addOption('licenses', 'new-license')" class="bg-pea-purple text-white px-4 py-2 rounded-xl text-sm font-medium">เพิ่ม</button>
+                </div>
+                <div id="list-licenses" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <!-- Manage Staff Names -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <h3 class="text-sm font-bold text-gray-800">4. รายชื่อพนักงาน (ผู้ส่งมอบ / ผู้รับมอบ)</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-staff" placeholder="เช่น นายสมชาย ใจดี" class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-pea-purple focus:outline-none">
+                    <button type="button" onclick="addOption('staff', 'new-staff')" class="bg-pea-purple text-white px-4 py-2 rounded-xl text-sm font-medium">เพิ่ม</button>
+                </div>
+                <div id="list-staff" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <!-- Manage Managers -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                <h3 class="text-sm font-bold text-gray-800">5. รายชื่อผู้จัดการ (ผจก.ลงนาม)</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="new-manager" placeholder="เช่น นายอำนาจ เจริญสุข" class="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-pea-purple focus:outline-none">
+                    <button type="button" onclick="addOption('managers', 'new-manager')" class="bg-pea-purple text-white px-4 py-2 rounded-xl text-sm font-medium">เพิ่ม</button>
+                </div>
+                <div id="list-managers" class="flex flex-wrap gap-1.5"></div>
+            </div>
+            <!-- Reset Default Options -->
+            <div class="pt-2 pb-6 text-center">
+                <button type="button" onclick="resetDefaultOptions()" class="text-xs text-rose-600 underline">คืนค่าตัวเลือกเริ่มต้นทั้งหมด</button>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Navigation Bar (Mobile App Style) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] no-print">
+        <div class="max-w-3xl mx-auto grid grid-cols-3 h-16">
+            <button type="button" onclick="switchTab('form')" id="nav-form" class="flex flex-col items-center justify-center space-y-1 text-pea-purple font-semibold border-t-2 border-pea-purple bg-purple-50/30">
+                <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                <span class="text-[11px]">กรอกข้อมูล</span>
+            </button>
+            <button type="button" onclick="switchTab('report')" id="nav-report" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-pea-purple border-t-2 border-transparent">
+                <i data-lucide="file-output" class="w-5 h-5"></i>
+                <span class="text-[11px]">รายงาน / ส่งออก</span>
+            </button>
+            <button type="button" onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-pea-purple border-t-2 border-transparent">
+                <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+                <span class="text-[11px]">ตั้งค่าตัวเลือก</span>
+            </button>
+        </div>
+    </nav>
+    <script>
+        // ==========================================
+        // 1. MASTER DATA: 64 STANDARD TOOLS & 5 CATEGORIES
+        // ==========================================
+        const CATEGORIES = {
+            1: "หมวดที่ 1 รายการอุปกรณ์คุ้มครองความปลอดภัยส่วนบุคคล (PPE) (อ้างอิงอนุมัติ ผวก. ลงวันที่ 8 เมษายน 2565 (กปภ.(วค) 321/2565))",
+            2: "หมวดที่ 2 รายการอุปกรณ์ความปลอดภัย (อ้างอิงอนุมัติ ผวก. ลงวันที่ 8 เมษายน 2565 (กปภ.(วค) 321/2565 และหนังสือหลักการการจำแนกประเภทรายจ่าย ปี 2560))",
+            3: "หมวดที่ 3 เครื่องมือในการปฏิบัติงาน (อ้างอิงหนังสือหลักการการจำแนกประเภทรายจ่ายปี 2560 และนวัตกรรมขยายผลของ กฟภ. ระดับ TRL3 ขึ้นไป)",
+            4: "หมวดที่ 4 เครื่องมือสนับสนุนการปฏิบัติงาน (อ้างอิงหนังสือหลักการการจำแนกประเภทรายจ่ายปี 2560 และอนุมัติ ผวก. ลงวันที่ 8 มิถุนายน 2558 (ฝสส.311/2558))",
+            5: "หมวดที่ 5 เครื่องมือทดสอบและบำรุงรักษา (อ้างอิงหนังสือหลักการการจำแนกประเภทรายจ่ายปี 2560 และอนุมัติ ผวก. ลงวันที่ 8 มิถุนายน 2558 (ฝสส.311/2558))"
+        };
+        const MASTER_TOOLS = [
+            // หมวดที่ 1 (6 รายการ)
+            { id: 1, cat: 1, catNo: 1, name: "หมวกนิรภัย (Safety Helmet)", unit: "ใบ", std: 2 },
+            { id: 2, cat: 1, catNo: 2, name: "ถุงมือยางแรงสูง พร้อมถุงมือหนัง", unit: "คู่", std: 2 },
+            { id: 3, cat: 1, catNo: 3, name: "ถุงมือยางแรงต่ำ พร้อมถุงมือหนัง", unit: "คู่", std: 2 },
+            { id: 4, cat: 1, catNo: 4, name: "เข็มขัดนิรภัย (Safety Belt)", unit: "เส้น", std: 2 },
+            { id: 5, cat: 1, catNo: 5, name: "สายกันตก (Safety Strap)", unit: "เส้น", std: 2 },
+            { id: 6, cat: 1, catNo: 6, name: "เข็มขัดนิรภัยชนิดเต็มตัวพร้อมสายกันตก (Harness Lanyard)", unit: "ชุด", std: 1 },
+            // หมวดที่ 2 (13 รายการ)
+            { id: 7, cat: 2, catNo: 1, name: "อุปกรณ์ระบบป้ายทะเบียนและระบบล็อก (Log Out Tag Out)", unit: "อัน", std: 3 },
+            { id: 8, cat: 2, catNo: 2, name: "เครื่องมือตรวจจับแรงดันไฟฟ้า ชนิดพกพา (Personal Voltage Detector)", unit: "อัน", std: 2 },
+            { id: 9, cat: 2, catNo: 3, name: "เครื่องวัดแรงดันไฟฟ้าแรงสูง (High Voltage Detector)", unit: "เครื่อง", std: 1 },
+            { id: 10, cat: 2, catNo: 4, name: "เครื่องมือต่อสายลงดิน (Grounding Equipment)", unit: "เครื่อง", std: 2 },
+            { id: 11, cat: 2, catNo: 5, name: "ชุดไม้ชักฟิวส์ (Disconnect Sticks)", unit: "ชุด", std: 1 },
+            { id: 12, cat: 2, catNo: 6, name: "สัญญานไฟวับวาบพร้อมอุปกรณ์ประกอบ", unit: "ชุด", std: 2 },
+            { id: 13, cat: 2, catNo: 7, name: "ป้ายกั้นทาง เตือนอันตราย (แบบพับเก็บได้ พร้อมไฟ LED)", unit: "อัน", std: 2 },
+            { id: 14, cat: 2, catNo: 8, name: "กรวยยางสะท้อนแสง ความสูง 80 ซม.", unit: "อัน", std: 10 },
+            { id: 15, cat: 2, catNo: 9, name: "อุปกรณ์ส่องสว่างในเวลากลางคืน", unit: "อัน", std: 1 },
+            { id: 16, cat: 2, catNo: 10, name: "วิทยุสื่อสาร ประจำรถยนต์", unit: "เครื่อง", std: 1 },
+            { id: 17, cat: 2, catNo: 11, name: "เทปกั้นพื้นที่การทำงาน Warning Tape (สี ขาว-แดง หรือ เหลือง-ดำ)", unit: "ม้วน", std: 1 },
+            { id: 18, cat: 2, catNo: 12, name: "ธงสำหรับให้สัญญาณจราจร", unit: "คัน", std: 2 },
+            { id: 19, cat: 2, catNo: 13, name: "กระบองไฟจราจร", unit: "อัน", std: 2 },
+            // หมวดที่ 3 (38 รายการ)
+            { id: 20, cat: 3, catNo: 1, name: "Clampstick Grip all type ความยาว 8 ฟุต", unit: "อัน", std: 1 },
+            { id: 21, cat: 3, catNo: 2, name: "Standard Universal Sticks (สามารถใช้ร่วมกับ Load Break Tools)", unit: "ชุด", std: 1 },
+            { id: 22, cat: 3, catNo: 3, name: "เครื่องมือตัดโหลด (Load Break Tool หรือโหลดบัสเตอร์)", unit: "ชุด", std: 1 },
+            { id: 23, cat: 3, catNo: 4, name: "Ratchet Cable Cutter", unit: "ชุด", std: 1 },
+            { id: 24, cat: 3, catNo: 5, name: "Conductor cutter with Insulate handle", unit: "อัน", std: 1 },
+            { id: 25, cat: 3, catNo: 6, name: "Insulated Hanger", unit: "อัน", std: 2 },
+            { id: 26, cat: 3, catNo: 7, name: "ชุดรอกเดี่ยวเปิดข้าง พร้อมเชือกและฮุค (Snatch Block) รับน้ำหนักได้ 150 กก.", unit: "ชุด", std: 1 },
+            { id: 27, cat: 3, catNo: 8, name: "เชือกอเนกประสงค์ ยาว 30 เมตร 1/2 นิ้ว (Hotline)", unit: "เส้น", std: 1 },
+            { id: 28, cat: 3, catNo: 9, name: "รอก 3 - 2 ชนิดไฟเบอร์กลาส พร้อมเชือก PP", unit: "ชุด", std: 1 },
+            { id: 29, cat: 3, catNo: 10, name: "เครื่องมือบีบ (Compression Tool) หลอดต่อสาย ชนิดไฮโดรลิก", unit: "เครื่อง", std: 1 },
+            { id: 30, cat: 3, catNo: 11, name: "เครื่องมือบีบ (Compression Tool) หลอดต่อสายไฟ ชนิดแบตเตอรี่", unit: "เครื่อง", std: 1 },
+            { id: 31, cat: 3, catNo: 12, name: "เครื่องมือบีบ (Compression Tool) คอนเนคเตอร์ แบบ H", unit: "เครื่อง", std: 1 },
+            { id: 32, cat: 3, catNo: 13, name: "Pulling Grip สายเคเบิล ขนาด 25 - 185 ตร.มม.", unit: "อัน", std: 1 },
+            { id: 33, cat: 3, catNo: 14, name: "เครื่องมือจับและดึงสาย (Wire Grip Come along) สายลวดเหล็ก 25-95 ตร.มม.", unit: "อัน", std: 2 },
+            { id: 34, cat: 3, catNo: 15, name: "เครื่องมือจับและดึงสาย (Wire Grip Come along) AL, ACSR 25-50 ตร.มม.(1 ตัน)", unit: "อัน", std: 2 },
+            { id: 35, cat: 3, catNo: 16, name: "เครื่องมือจับและดึงสาย (Wire Grip Come along) AL,ACSR 70-95 ตร.มม.(2 ตัน)", unit: "อัน", std: 2 },
+            { id: 36, cat: 3, catNo: 17, name: "เครื่องมือจับและดึงสาย (Wire Grip Come along) AL, ACSR 120-185 ตร.มม. (3 ตัน)", unit: "อัน", std: 2 },
+            { id: 37, cat: 3, catNo: 18, name: "Nylon-Strap Ratchet Hoists", unit: "ชุด", std: 2 },
+            { id: 38, cat: 3, catNo: 19, name: "เครื่องดึงสาย (Coffing Hoist) ขนาด 1.5 ตัน", unit: "ชุด", std: 2 },
+            { id: 39, cat: 3, catNo: 20, name: "คีมตัดสายไฟฟ้า สำหรับตัดสายไฟฟ้า AL ACSR", unit: "อัน", std: 1 },
+            { id: 40, cat: 3, catNo: 21, name: "คัตเตอร์โซ่สำหรับสาย ACSR, SAC 50-185 ตร.มม.", unit: "ชุด", std: 1 },
+            { id: 41, cat: 3, catNo: 22, name: "คีมตัดลวดเหล็ก 95 ตร.มม.", unit: "ตัว", std: 1 },
+            { id: 42, cat: 3, catNo: 23, name: "มีดปอกสายเคเบิ้ลอากาศขนาด 50 ตร.มม. (นวัตกรรมขยายผล)", unit: "ด้าม", std: 1 },
+            { id: 43, cat: 3, catNo: 24, name: "มีดปอกสายเคเบิ้ลอากาศขนาด 185 ตร.มม. (นวัตกรรมขยายผล)", unit: "ด้าม", std: 1 },
+            { id: 44, cat: 3, catNo: 25, name: "เครื่องมือปอกสายเคเบิลอากาศ ขนาด 50-185 ตร.มม.", unit: "ตัว", std: 1 },
+            { id: 45, cat: 3, catNo: 26, name: "ประแจบล็อก (Block Wrench) พร้อมด้าม (เบอร์ 10-22)", unit: "ชุด", std: 1 },
+            { id: 46, cat: 3, catNo: 27, name: "ประแจบล็อก (Block Wrench) ชนิดแบตเตอรี่ พร้อมด้าม (เบอร์ 10-22)", unit: "ชุด", std: 1 },
+            { id: 47, cat: 3, catNo: 28, name: "ค้อนปอนด์ 1-2 ปอนด์", unit: "อัน", std: 1 },
+            { id: 48, cat: 3, catNo: 29, name: "ค้อนปอนด์ 6-8 ปอนด์", unit: "อัน", std: 1 },
+            { id: 49, cat: 3, catNo: 30, name: "เลื่อยตัดเหล็ก", unit: "อัน", std: 1 },
+            { id: 50, cat: 3, catNo: 31, name: "ประแจเลื่อนด้ามยาว ขนาด (12-15 นิ้ว)", unit: "อัน", std: 1 },
+            { id: 51, cat: 3, catNo: 32, name: "ประแจวัดแรงบิดของน็อต (Torque Wrench) ขนาด 80 n-m ขึ้นไป", unit: "อัน", std: 1 },
+            { id: 52, cat: 3, catNo: 33, name: "ตะไบแบน + หางหนู + สามเหลี่ยม ขนาดกลาง", unit: "ชุด", std: 1 },
+            { id: 53, cat: 3, catNo: 34, name: "คีมล็อก", unit: "ชุด", std: 1 },
+            { id: 54, cat: 3, catNo: 35, name: "กล่องเก็บเครื่องมือช่างเบื้องต้น ประจำรถ", unit: "กล่อง", std: 1 },
+            { id: 55, cat: 3, catNo: 36, name: "เลื่อยโซ่ ขนาดไม่เกิน 12 นิ้ว (เลื่อยยนต์หรือแบตเตอรี่)", unit: "ชุด", std: 1 },
+            { id: 56, cat: 3, catNo: 37, name: "ชุดมีดตะขอ สำหรับตัดกิ่งไม้", unit: "ชุด", std: 1 },
+            { id: 57, cat: 3, catNo: 38, name: "มีดพร้า สำหรับตัดกิ่งไม้", unit: "เล่ม", std: 1 },
+            // หมวดที่ 4 (6 รายการ)
+            { id: 58, cat: 4, catNo: 1, name: "โทรโข่ง ชนิดมือถือ (Hand Held)", unit: "เครื่อง", std: 1 },
+            { id: 59, cat: 4, catNo: 2, name: "สว่านไร้สายชนิดเปลี่ยนหัวสว่านได้", unit: "ชุด", std: 1 },
+            { id: 60, cat: 4, catNo: 3, name: "บันไดไม้ไผ่ ยาว 5 - 7 เมตร", unit: "ชุด", std: 1 },
+            { id: 61, cat: 4, catNo: 4, name: "สปอร์ตไลท์ แบบเสียบรถยนต์", unit: "อัน", std: 1 },
+            { id: 62, cat: 4, catNo: 5, name: "เทปวัดระยะยาว 50 เมตร", unit: "อัน", std: 1 },
+            { id: 63, cat: 4, catNo: 6, name: "ตลับเมตร ยาว 5 เมตร", unit: "อัน", std: 1 },
+            // หมวดที่ 5 (1 รายการ)
+            { id: 64, cat: 5, catNo: 1, name: "Digital Multimeter แบบ Clip on 1,000A - 600 VAC", unit: "เครื่อง", std: 1 }
+        ];
+        // ==========================================
+        // 2. DEFAULT DROPDOWN OPTIONS
+        // ==========================================
+        const DEFAULT_OPTIONS = {
+            branches: [
+                "การไฟฟ้าส่วนภูมิภาคสาขาท้ายเหมือง",
+                "การไฟฟ้าส่วนภูมิภาคสาขาพังงา",
+                "การไฟฟ้าส่วนภูมิภาคสาขาตะกั่วทุ่ง",
+                "การไฟฟ้าส่วนภูมิภาคสาขาคุระบุรี",
+                "การไฟฟ้าส่วนภูมิภาคสาขาตะกั่วป่า",
+                "การไฟฟ้าส่วนภูมิภาคสาขากะปง",
+                "การไฟฟ้าส่วนภูมิภาคสาขาทับปุด",
+                "การไฟฟ้าส่วนภูมิภาคสาขาเกาะยาว"
+            ],
+            vehicleTypes: [
+                "รถยนต์กระเช้าแก้ไฟ 4 ตัน",
+                "รถยนต์แก้ไฟฟ้าขัดข้อง 2 ตัน"
+            ],
+            licenses: [
+                "80-7167 พังงา",
+                "80-5197 พังงา"
+            ],
+            staff: [
+                "นายนันทวุฒิ จันทร์ฉ่ำ",
+                "นายชุติพันธ์ แพร่นาม",
+                "นายภานุพงศ์ แทนโป",
+                "นายศุภชัย ทองสงค์",
+                "นายจารุวัฒน์ วุฒิ"
+            ],
+            managers: [
+                "นายศักดิ์ดา ชาติวังศากุล (ผจก.กฟส.ท้ายเหมือง)",
+                "นายธีรภัทร์ เพชรสีช่วง (ผจก.กฟส.พังงา)",
+                "นายสมพักร์ บุญศรี (ผจก.กฟส.ตะกั่วป่า)",
+                "นายมุนินทร์ บรรเทือง (ผจก.กฟส.ตะกั่วทุ่ง)"
+            ]
+        };
+        // ==========================================
+        // 3. STATE MANAGEMENT
+        // ==========================================
+        let appOptions = JSON.parse(localStorage.getItem('pea_tool_options')) || JSON.parse(JSON.stringify(DEFAULT_OPTIONS));
+        let currentCategory = 'all';
+        let currentToolsState = {};
+        function initToolsState() {
+            MASTER_TOOLS.forEach(t => {
+                currentToolsState[t.id] = { receive: t.std, deliver: t.std };
+            });
+        }
+
+        // ==========================================
+        // 3.5 HEADER & SIGNATURE PERSISTENCE HELPERS
+        // ==========================================
+        const LAST_HEADER_DRAFT_KEY = 'pea_tool_last_header_draft_v1';
+
+        function saveHeaderDraft() {
+            try {
+                const draft = {
+                    branch: getFieldValue('input-branch', 'custom-branch'),
+                    date: document.getElementById('input-date').value,
+                    vehicleType: getFieldValue('input-vehicle-type', 'custom-vehicle-type'),
+                    license: getFieldValue('input-license', 'custom-license'),
+                    shift: document.getElementById('input-shift').value,
+                    sender: getFieldValue('input-sender', 'custom-sender'),
+                    receiver: getFieldValue('input-receiver', 'custom-receiver'),
+                    manager: getFieldValue('input-manager', 'custom-manager'),
+                    managerSignature: currentSignatures.manager || null,
+                    senderSignature: currentSignatures.sender || null,
+                    receiverSignature: currentSignatures.receiver || null
+                };
+                localStorage.setItem(LAST_HEADER_DRAFT_KEY, JSON.stringify(draft));
+            } catch (e) {}
+        }
+
+        function getHeaderDraft() {
+            try {
+                const raw = localStorage.getItem(LAST_HEADER_DRAFT_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+                function formatThaiDate(dateStr) {
+            if (!dateStr) return "-";
+            const months = [
+                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+            ];
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const year = parseInt(parts[0], 10) + 543;
+            const month = months[parseInt(parts[1], 10) - 1];
+            const day = parseInt(parts[2], 10);
+            return `${day} ${month} ${year}`;
+        }
+        // ==========================================
+        // 4. INITIALIZATION & DROPDOWN RENDERING
+        // ==========================================
+
+        // ==========================================
+        // 6.5 LIVE SIGNATURE PAD STATE & DRAWING
+        // ==========================================
+        let currentSignatures = {
+            sender: null,
+            receiver: null,
+            manager: null
+        };
+        const sigPadInstances = {};
+
+        function initSignaturePad(role) {
+            const canvas = document.getElementById(`sig-canvas-${role}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let drawing = false;
+            let hasDrawn = false;
+
+            function resizeCanvas(preserveData = true) {
+                const prevData = preserveData ? canvas.toDataURL('image/png') : null;
+                const rect = canvas.getBoundingClientRect();
+                const width = Math.max(200, Math.floor(rect.width || 280));
+                const height = 110;
+                const ratio = window.devicePixelRatio || 1;
+                canvas.width = width * ratio;
+                canvas.height = height * ratio;
+                ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+                ctx.lineWidth = 2.4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = '#111827';
+                if (preserveData && currentSignatures[role]) {
+                    drawImageToCanvas(role, currentSignatures[role]);
+                } else if (preserveData && hasDrawn && prevData) {
+                    drawImageToCanvas(role, prevData);
+                }
+            }
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+
+            function startDraw(e) {
+                e.preventDefault();
+                drawing = true;
+                hasDrawn = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function moveDraw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function endDraw(e) {
+                if (!drawing) return;
+                if (e) e.preventDefault();
+                drawing = false;
+                ctx.closePath();
+                currentSignatures[role] = canvas.toDataURL('image/png');
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', moveDraw);
+            window.addEventListener('mouseup', endDraw);
+
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', moveDraw, { passive: false });
+            canvas.addEventListener('touchend', endDraw, { passive: false });
+
+            sigPadInstances[role] = { resizeCanvas };
+            resizeCanvas(false);
+        }
+
+        function drawImageToCanvas(role, dataUrl) {
+            const canvas = document.getElementById(`sig-canvas-${role}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            const width = Math.max(200, Math.floor(rect.width || 280));
+            const height = 110;
+            const ratio = window.devicePixelRatio || 1;
+            const targetW = Math.floor(width * ratio);
+            const targetH = Math.floor(height * ratio);
+            if (canvas.width !== targetW || canvas.height !== targetH) {
+                canvas.width = targetW;
+                canvas.height = targetH;
+            }
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            ctx.lineWidth = 2.4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#111827';
+
+            if (!dataUrl) return;
+            const img = new Image();
+            img.onload = function () {
+                const c = document.getElementById(`sig-canvas-${role}`);
+                if (!c) return;
+                const cCtx = c.getContext('2d');
+                cCtx.save();
+                cCtx.setTransform(1, 0, 0, 1, 0, 0);
+                cCtx.clearRect(0, 0, c.width, c.height);
+                cCtx.drawImage(img, 0, 0, c.width, c.height);
+                cCtx.restore();
+            };
+            img.src = dataUrl;
+        }
+
+        function setSignatureData(role, dataUrl) {
+            currentSignatures[role] = dataUrl || null;
+            drawImageToCanvas(role, currentSignatures[role]);
+            requestAnimationFrame(() => {
+                drawImageToCanvas(role, currentSignatures[role]);
+            });
+        }
+
+        function clearSignaturePad(role) {
+            currentSignatures[role] = null;
+            drawImageToCanvas(role, null);
+        }
+
+        function clearAllSignatures() {
+            ['sender', 'receiver', 'manager'].forEach(r => clearSignaturePad(r));
+            showToast("ล้างลายเซ็นทั้งหมดแล้ว");
+        }
+
+        function renderSignatureSlotHTML(nameText, sigDataUrl, isManager = false) {
+            if (sigDataUrl) {
+                const imgClass = isManager ? 'sig-manager-img' : 'sig-inline-img';
+                const maxH = isManager ? '34px' : '28px';
+                const maxW = isManager ? '160px' : '120px';
+                return `
+                    <span style="display: inline-flex; flex-direction: column; align-items: center; vertical-align: bottom; margin: 0 2px;">
+                        <img src="${sigDataUrl}" class="${imgClass}" alt="ลายเซ็น" style="max-height: ${maxH}; max-width: ${maxW}; display: block; margin-bottom: -4px;">
+                        <span style="border-bottom: 1px dotted #000; width: ${isManager ? '170px' : '125px'}; display: inline-block; height: 1px;"></span>
+                    </span>
+                `;
+            }
+            return isManager
+                ? '............................................................'
+                : '........................................';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initSignaturePad('sender');
+            initSignaturePad('receiver');
+            initSignaturePad('manager');
+            window.addEventListener('resize', () => {
+                ['sender', 'receiver', 'manager'].forEach(r => {
+                    if (sigPadInstances[r]) sigPadInstances[r].resizeCanvas(true);
+                });
+            });
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('input-date').value = `${yyyy}-${mm}-${dd}`;
+            initToolsState();
+            populateAllDropdowns();
+            renderSettingsLists();
+            const savedCloudUrl = getCloudWebAppUrl();
+            const cloudInp = document.getElementById('cloud-webapp-url');
+            if (cloudInp && savedCloudUrl) cloudInp.value = savedCloudUrl;
+            updateCloudStatusUI(savedCloudUrl ? 'พร้อมซิงค์ข้อมูลอัตโนมัติกับ Google Sheet (แบบเรียลไทม์)' : 'ยังไม่ได้ตั้งค่า Web App URL (ไปที่เมนู ตั้งค่าตัวเลือก)');
+
+            ['input-branch', 'custom-branch', 'input-vehicle-type', 'custom-vehicle-type',
+             'input-license', 'custom-license', 'input-sender', 'custom-sender',
+             'input-receiver', 'custom-receiver', 'input-manager', 'custom-manager'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', saveHeaderDraft);
+                    el.addEventListener('input', saveHeaderDraft);
+                }
+            });
+
+            loadDayData();
+        });
+        function populateSelect(selectId, items, customLabel) {
+            const select = document.getElementById(selectId);
+            const currentVal = select.value;
+            select.innerHTML = '';
+            items.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.textContent = item;
+                select.appendChild(opt);
+            });
+            const customOpt = document.createElement('option');
+            customOpt.value = '__CUSTOM__';
+            customOpt.textContent = `+ ${customLabel}`;
+            select.appendChild(customOpt);
+            if (currentVal && (items.includes(currentVal) || currentVal === '__CUSTOM__')) {
+                select.value = currentVal;
+            }
+        }
+        function populateAllDropdowns() {
+            populateSelect('input-branch', appOptions.branches, 'ระบุสาขาอื่นๆ...');
+            populateSelect('input-vehicle-type', appOptions.vehicleTypes, 'ระบุประเภทรถอื่นๆ...');
+            populateSelect('input-license', appOptions.licenses, 'ระบุทะเบียนรถอื่นๆ...');
+            populateSelect('input-sender', appOptions.staff, 'พิมพ์ชื่อผู้ส่งมอบเอง...');
+            populateSelect('input-receiver', appOptions.staff, 'พิมพ์ชื่อผู้รับมอบเอง...');
+            populateSelect('input-manager', appOptions.managers, 'พิมพ์ชื่อ ผจก. เอง...');
+        }
+        function handleCustomSelect(type) {
+            const map = {
+                'branch': ['input-branch', 'custom-branch'],
+                'vehicle-type': ['input-vehicle-type', 'custom-vehicle-type'],
+                'license': ['input-license', 'custom-license'],
+                'sender': ['input-sender', 'custom-sender'],
+                'receiver': ['input-receiver', 'custom-receiver'],
+                'manager': ['input-manager', 'custom-manager']
+            };
+            const [selId, inpId] = map[type];
+            const sel = document.getElementById(selId);
+            const inp = document.getElementById(inpId);
+            if (sel.value === '__CUSTOM__') {
+                inp.classList.remove('hidden');
+                inp.focus();
+            } else {
+                inp.classList.add('hidden');
+            }
+        }
+        function getFieldValue(selId, inpId) {
+            const sel = document.getElementById(selId);
+            if (sel.value === '__CUSTOM__') {
+                return document.getElementById(inpId).value.trim() || '-';
+            }
+            return sel.value;
+        }
+        function setFieldValue(selId, inpId, val) {
+            if (!val || val === '-') return;
+            const sel = document.getElementById(selId);
+            const inp = document.getElementById(inpId);
+            const exists = Array.from(sel.options).some(o => o.value === val);
+            if (exists) {
+                sel.value = val;
+                inp.classList.add('hidden');
+            } else {
+                sel.value = '__CUSTOM__';
+                inp.value = val;
+                inp.classList.remove('hidden');
+            }
+        }
+        // ==========================================
+        // 5. DAILY RECORD STORAGE (3 SHIFTS PER DAY)
+        // ==========================================
+        function getRecordKey() {
+            const dateVal = document.getElementById('input-date').value;
+            const licenseVal = getFieldValue('input-license', 'custom-license');
+            return `pea_record_${dateVal}_${licenseVal}`;
+        }
+        function getDailyRecord() {
+            const key = getRecordKey();
+            const raw = localStorage.getItem(key);
+            if (raw) return JSON.parse(raw);
+            return {
+                branch: getFieldValue('input-branch', 'custom-branch'),
+                vehicleType: getFieldValue('input-vehicle-type', 'custom-vehicle-type'),
+                license: getFieldValue('input-license', 'custom-license'),
+                date: document.getElementById('input-date').value,
+                manager: getFieldValue('input-manager', 'custom-manager'),
+                managerSignature: null,
+                shifts: {
+                    1: null,
+                    2: null,
+                    3: null
+                }
+            };
+        }
+        function parseToolsFromSheetRow_(rowObj, fallbackTools = null) {
+            const tools = {};
+            MASTER_TOOLS.forEach(t => {
+                const fb = fallbackTools && fallbackTools[t.id] ? fallbackTools[t.id] : null;
+                tools[t.id] = {
+                    receive: fb && !isNaN(parseInt(fb.receive, 10)) ? parseInt(fb.receive, 10) : t.std,
+                    deliver: fb && !isNaN(parseInt(fb.deliver, 10)) ? parseInt(fb.deliver, 10) : t.std
+                };
+            });
+
+            if (!rowObj) return tools;
+
+            const rawJson = rowObj.tools_json || rowObj.tools || rowObj.toolsDetail;
+            if (rawJson) {
+                try {
+                    const parsed = typeof rawJson === 'string' ? JSON.parse(rawJson) : rawJson;
+                    if (parsed && typeof parsed === 'object') {
+                        let foundAny = false;
+                        MASTER_TOOLS.forEach(t => {
+                            const item = parsed[t.id] || parsed[String(t.id)];
+                            if (item && typeof item === 'object') {
+                                foundAny = true;
+                                const fb = fallbackTools && fallbackTools[t.id] ? fallbackTools[t.id] : null;
+                                const rRaw = (item.receive !== undefined && item.receive !== null && item.receive !== '') ? parseInt(item.receive, 10) : NaN;
+                                const dRaw = (item.deliver !== undefined && item.deliver !== null && item.deliver !== '') ? parseInt(item.deliver, 10) : NaN;
+                                tools[t.id] = {
+                                    receive: !isNaN(rRaw) ? rRaw : (fb ? parseInt(fb.receive, 10) : t.std),
+                                    deliver: !isNaN(dRaw) ? dRaw : (fb ? parseInt(fb.deliver, 10) : t.std)
+                                };
+                            }
+                        });
+                        if (foundAny) return tools;
+                    }
+                } catch (e) {
+                    // Fallback to per-tool columns if not valid JSON
+                }
+            }
+
+            let hasPerToolCol = false;
+            MASTER_TOOLS.forEach(t => {
+                const rCandidate = rowObj[`tool_${t.id}_receive`] ?? rowObj[`r${t.id}`];
+                const dCandidate = rowObj[`tool_${t.id}_deliver`] ?? rowObj[`d${t.id}`];
+                const fb = fallbackTools && fallbackTools[t.id] ? fallbackTools[t.id] : null;
+                const hasR = (rCandidate !== undefined && rCandidate !== null && String(rCandidate).trim() !== '');
+                const hasD = (dCandidate !== undefined && dCandidate !== null && String(dCandidate).trim() !== '');
+                if (hasR || hasD) hasPerToolCol = true;
+                const rNum = hasR ? parseInt(rCandidate, 10) : (fb ? parseInt(fb.receive, 10) : t.std);
+                const dNum = hasD ? parseInt(dCandidate, 10) : (fb ? parseInt(fb.deliver, 10) : t.std);
+                tools[t.id] = {
+                    receive: isNaN(rNum) ? t.std : rNum,
+                    deliver: isNaN(dNum) ? t.std : dNum
+                };
+            });
+
+            if (!hasPerToolCol && fallbackTools) {
+                MASTER_TOOLS.forEach(t => {
+                    if (fallbackTools[t.id]) {
+                        tools[t.id] = {
+                            receive: parseInt(fallbackTools[t.id].receive, 10),
+                            deliver: parseInt(fallbackTools[t.id].deliver, 10)
+                        };
+                    }
+                });
+            }
+
+            return tools;
+        }
+
+        function mergeRemoteShiftsToRecord_(baseRecord, remoteShifts, dateVal, licenseVal) {
+            const merged = {
+                ...baseRecord,
+                date: dateVal || baseRecord.date,
+                license: licenseVal || baseRecord.license,
+                shifts: {
+                    1: baseRecord.shifts && baseRecord.shifts[1] ? baseRecord.shifts[1] : null,
+                    2: baseRecord.shifts && baseRecord.shifts[2] ? baseRecord.shifts[2] : null,
+                    3: baseRecord.shifts && baseRecord.shifts[3] ? baseRecord.shifts[3] : null
+                }
+            };
+
+            if (!remoteShifts) return merged;
+
+            ['1', '2', '3'].forEach(sKey => {
+                const sRow = remoteShifts[sKey];
+                if (!sRow) return;
+
+                if (sRow.branch) merged.branch = String(sRow.branch);
+                if (sRow.vehicle_type || sRow.vehicleType) {
+                    merged.vehicleType = String(sRow.vehicle_type || sRow.vehicleType);
+                }
+                if (sRow.manager) merged.manager = String(sRow.manager);
+                if (sRow.managerSignature || sRow.manager_signature) {
+                    merged.managerSignature = sRow.managerSignature || sRow.manager_signature;
+                }
+
+                const prevLocalShift = merged.shifts[sKey];
+                const fallbackTools = prevLocalShift && prevLocalShift.tools ? prevLocalShift.tools : null;
+                merged.shifts[sKey] = {
+                    sender: (sRow.sender !== undefined && sRow.sender !== null && String(sRow.sender).trim() !== '') ? String(sRow.sender) : (prevLocalShift ? prevLocalShift.sender : '-'),
+                    receiver: (sRow.receiver !== undefined && sRow.receiver !== null && String(sRow.receiver).trim() !== '') ? String(sRow.receiver) : (prevLocalShift ? prevLocalShift.receiver : '-'),
+                    senderSignature: sRow.senderSignature || sRow.sender_signature || (prevLocalShift ? prevLocalShift.senderSignature : null),
+                    receiverSignature: sRow.receiverSignature || sRow.receiver_signature || (prevLocalShift ? prevLocalShift.receiverSignature : null),
+                    tools: parseToolsFromSheetRow_(sRow, fallbackTools),
+                    savedAt: sRow.timestamp_server || sRow.savedAt || (prevLocalShift ? prevLocalShift.savedAt : new Date().toISOString())
+                };
+            });
+
+            return merged;
+        }
+
+        async function loadDayData(showNotify = false) {
+            const dateVal = document.getElementById('input-date').value;
+            const licenseVal = getFieldValue('input-license', 'custom-license');
+            document.getElementById('thai-date-preview').textContent = `วันที่: ${formatThaiDate(dateVal)}`;
+
+            let record = getDailyRecord();
+            const draft = getHeaderDraft();
+            const hasSavedRecord = Boolean(
+                localStorage.getItem(getRecordKey()) ||
+                (record.shifts && (record.shifts['1'] || record.shifts['2'] || record.shifts['3']))
+            );
+            if (hasSavedRecord) {
+                if (record.branch) setFieldValue('input-branch', 'custom-branch', record.branch);
+                if (record.vehicleType) setFieldValue('input-vehicle-type', 'custom-vehicle-type', record.vehicleType);
+                if (record.manager) setFieldValue('input-manager', 'custom-manager', record.manager);
+                setSignatureData('manager', record.managerSignature || (draft && draft.managerSignature) || null);
+            } else if (draft) {
+                if (draft.branch) setFieldValue('input-branch', 'custom-branch', draft.branch);
+                if (draft.vehicleType) setFieldValue('input-vehicle-type', 'custom-vehicle-type', draft.vehicleType);
+                if (draft.manager) setFieldValue('input-manager', 'custom-manager', draft.manager);
+                setSignatureData('manager', draft.managerSignature || null);
+            } else {
+                setSignatureData('manager', record.managerSignature || null);
+            }
+            updateShiftPills(record);
+            onShiftChange();
+
+            const cloudUrl = getCloudWebAppUrl();
+            if (!cloudUrl || !dateVal) return;
+
+            try {
+                const url = new URL(cloudUrl);
+                url.searchParams.set('action', 'get_day');
+                url.searchParams.set('date', dateVal);
+                if (licenseVal && licenseVal !== '-') {
+                    url.searchParams.set('license', licenseVal);
+                }
+
+                const res = await fetch(url.toString(), { method: 'GET' });
+                if (!res.ok) return;
+
+                const data = await res.json();
+                if (!data || !data.ok || !data.shifts) return;
+
+                const latestLocal = getDailyRecord();
+                const syncedRecord = mergeRemoteShiftsToRecord_(latestLocal, data.shifts, dateVal, licenseVal);
+                localStorage.setItem(getRecordKey(), JSON.stringify(syncedRecord));
+
+                if (syncedRecord.branch) setFieldValue('input-branch', 'custom-branch', syncedRecord.branch);
+                if (syncedRecord.vehicleType) setFieldValue('input-vehicle-type', 'custom-vehicle-type', syncedRecord.vehicleType);
+                if (syncedRecord.manager) setFieldValue('input-manager', 'custom-manager', syncedRecord.manager);
+                setSignatureData('manager', syncedRecord.managerSignature || null);
+
+                updateShiftPills(syncedRecord);
+                onShiftChange();
+
+                const nowStr = new Date().toLocaleTimeString('th-TH');
+                updateCloudStatusUI(`ซิงค์ข้อมูลล่าสุดจาก Google Sheet แล้วเมื่อ ${nowStr}`);
+                if (showNotify) {
+                    showToast('อัปเดตข้อมูลล่าสุดจาก Google Sheet แล้ว');
+                }
+            } catch (err) {
+                console.warn('ไม่สามารถดึงข้อมูลล่าสุดจาก Google Sheet ได้:', err);
+                if (showNotify) {
+                    showToast('ดึงข้อมูลล่าสุดไม่สำเร็จ ใช้ข้อมูลในเครื่องแทน');
+                }
+            }
+        }
+        function updateShiftPills(record) {
+            let count = 0;
+            const currentShift = document.getElementById('input-shift').value;
+            ['1', '2', '3'].forEach(s => {
+                const pill = document.getElementById(`shift-pill-${s}`);
+                const icon = document.getElementById(`shift-icon-${s}`);
+                const isSaved = record.shifts && record.shifts[s] !== null;
+                if (isSaved) count++;
+                if (s === currentShift) {
+                    pill.className = "p-2 rounded-xl border-2 border-pea-purple bg-pea-light/50 text-left transition-all shadow-sm";
+                } else if (isSaved) {
+                    pill.className = "p-2 rounded-xl border border-emerald-300 bg-emerald-50/50 text-left transition-all";
+                } else {
+                    pill.className = "p-2 rounded-xl border border-gray-200 bg-gray-50/50 text-left transition-all";
+                }
+                icon.className = isSaved ? "w-2.5 h-2.5 rounded-full bg-emerald-500" : "w-2.5 h-2.5 rounded-full bg-gray-300";
+            });
+            document.getElementById('saved-shifts-count').textContent = `บันทึกแล้ว ${count}/3 ช่วงเวลา`;
+            document.getElementById('header-status-badge').textContent = `บันทึก ${count}/3 กะ`;
+        }
+        function quickSelectShift(shiftNum) {
+            document.getElementById('input-shift').value = shiftNum;
+            onShiftChange();
+        }
+        function onShiftChange() {
+            const shiftNum = document.getElementById('input-shift').value;
+            document.getElementById('save-btn-text').textContent = `บันทึกข้อมูลช่วงที่ ${shiftNum}`;
+            const record = getDailyRecord();
+            updateShiftPills(record);
+            if (record.shifts && record.shifts[shiftNum]) {
+                const sData = record.shifts[shiftNum];
+                setFieldValue('input-sender', 'custom-sender', sData.sender);
+                setFieldValue('input-receiver', 'custom-receiver', sData.receiver);
+                setSignatureData('sender', sData.senderSignature || null);
+                setSignatureData('receiver', sData.receiverSignature || null);
+                initToolsState();
+                if (sData.tools && typeof sData.tools === 'object') {
+                    MASTER_TOOLS.forEach(t => {
+                        const savedItem = sData.tools[t.id] || sData.tools[String(t.id)];
+                        if (savedItem) {
+                            const rVal = parseInt(savedItem.receive, 10);
+                            const dVal = parseInt(savedItem.deliver, 10);
+                            currentToolsState[t.id] = {
+                                receive: isNaN(rVal) ? t.std : rVal,
+                                deliver: isNaN(dVal) ? t.std : dVal
+                            };
+                        }
+                    });
+                }
+            } else {
+                setSignatureData('sender', null);
+                setSignatureData('receiver', null);
+                initToolsState();
+                const prevShift = shiftNum === '2' ? '1' : (shiftNum === '3' ? '2' : null);
+                if (prevShift && record.shifts && record.shifts[prevShift]) {
+                    const prevTools = record.shifts[prevShift].tools;
+                    MASTER_TOOLS.forEach(t => {
+                        if (prevTools[t.id]) {
+                            currentToolsState[t.id].receive = prevTools[t.id].deliver;
+                            currentToolsState[t.id].deliver = prevTools[t.id].deliver;
+                        }
+                    });
+                }
+            }
+            renderToolsList();
+        }
+        const CLOUD_URL_STORAGE_KEY = 'pea_tool_cloud_webapp_url';
+        const DEFAULT_CLOUD_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwysWN-IZaAq0v9ddsYA2kAGVU390ZtoQF5LAQ1ubN6LgAol7fIQNBqmht7NsIfULJI/exec';
+
+        function getCloudWebAppUrl() {
+            const saved = (localStorage.getItem(CLOUD_URL_STORAGE_KEY) || '').trim();
+            return saved || DEFAULT_CLOUD_WEBAPP_URL;
+        }
+
+        function saveCloudWebAppUrl() {
+            const inp = document.getElementById('cloud-webapp-url');
+            const url = (inp ? inp.value : '').trim();
+            localStorage.setItem(CLOUD_URL_STORAGE_KEY, url);
+            updateCloudStatusUI(url ? 'บันทึก Web App URL เรียบร้อยแล้ว (พร้อมส่งข้อมูลอัตโนมัติ)' : 'ล้าง Web App URL แล้ว (บันทึกเฉพาะในเครื่อง)');
+            showToast(url ? 'บันทึก URL เชื่อมต่อ Google Sheet แล้ว' : 'ล้าง URL แล้ว');
+        }
+
+        function updateCloudStatusUI(msg) {
+            const el = document.getElementById('cloud-sync-status');
+            if (el) el.textContent = msg;
+            const inp = document.getElementById('cloud-webapp-url');
+            if (inp && !inp.value && getCloudWebAppUrl()) {
+                inp.value = getCloudWebAppUrl();
+            }
+        }
+
+        function buildShiftPayload(record, shiftNum) {
+            const sData = record.shifts[shiftNum] || {};
+            const diffItems = [];
+            const toolsDetail = {};
+
+            MASTER_TOOLS.forEach(tool => {
+                const st = (sData.tools && sData.tools[tool.id]) ? sData.tools[tool.id] : { deliver: tool.std, receive: tool.std };
+                toolsDetail[tool.id] = {
+                    id: tool.id,
+                    cat: tool.cat,
+                    catNo: tool.catNo,
+                    name: tool.name,
+                    unit: tool.unit,
+                    std: tool.std,
+                    deliver: st.deliver,
+                    receive: st.receive
+                };
+                if (Number(st.deliver) !== Number(tool.std) || Number(st.receive) !== Number(tool.std)) {
+                    diffItems.push(`#${tool.id} ${tool.name} (ส่ง:${st.deliver}/รับ:${st.receive}/มฐ:${tool.std})`);
+                }
+            });
+
+            return {
+                action: 'save_shift',
+                branch: record.branch,
+                vehicleType: record.vehicleType,
+                license: record.license,
+                date: record.date,
+                thaiDate: formatThaiDate(record.date),
+                shift: String(shiftNum),
+                sender: sData.sender || '',
+                receiver: sData.receiver || '',
+                manager: record.manager || '',
+                senderSignature: sData.senderSignature || null,
+                receiverSignature: sData.receiverSignature || null,
+                managerSignature: record.managerSignature || null,
+                hasSenderSig: Boolean(sData.senderSignature),
+                hasReceiverSig: Boolean(sData.receiverSignature),
+                hasManagerSig: Boolean(record.managerSignature),
+                diffCount: diffItems.length,
+                diffSummary: diffItems.join('; '),
+                savedAt: sData.savedAt || new Date().toISOString(),
+                tools: toolsDetail,
+                tools_json: JSON.stringify(toolsDetail)
+            };
+        }
+
+        async function sendPayloadToGoogleSheet(payload) {
+            const url = getCloudWebAppUrl();
+            if (!url) return { ok: false, skipped: true };
+
+            // Use text/plain to avoid CORS preflight issues with Google Apps Script Web App
+            await fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            return { ok: true };
+        }
+
+        async function testCloudConnection() {
+            const urlInput = document.getElementById('cloud-webapp-url');
+            if (urlInput && urlInput.value.trim()) {
+                localStorage.setItem(CLOUD_URL_STORAGE_KEY, urlInput.value.trim());
+            }
+            const url = getCloudWebAppUrl();
+            if (!url) {
+                showToast('กรุณาวาง Web App URL ก่อนทดสอบ');
+                return;
+            }
+            const record = getDailyRecord();
+            const shiftNum = document.getElementById('input-shift').value || '1';
+            const payload = buildShiftPayload(record, shiftNum);
+            payload.action = 'test_ping';
+            try {
+                await sendPayloadToGoogleSheet(payload);
+                const nowStr = new Date().toLocaleTimeString('th-TH');
+                updateCloudStatusUI(`ส่งข้อมูลทดสอบไปยัง Google Sheet แล้วเมื่อ ${nowStr}`);
+                showToast('ส่งข้อมูลทดสอบไปที่ Google Sheet แล้ว');
+            } catch (err) {
+                updateCloudStatusUI('ส่งข้อมูลไม่สำเร็จ กรุณาตรวจสอบ Web App URL และการตั้งค่าสิทธิ์ Anyone');
+                showToast('ไม่สามารถส่งข้อมูลไปยัง Google Sheet ได้');
+            }
+        }
+
+        function saveCurrentShift() {
+            const shiftNum = document.getElementById('input-shift').value;
+            const record = getDailyRecord();
+            record.branch = getFieldValue('input-branch', 'custom-branch');
+            record.vehicleType = getFieldValue('input-vehicle-type', 'custom-vehicle-type');
+            record.license = getFieldValue('input-license', 'custom-license');
+            record.date = document.getElementById('input-date').value;
+            record.manager = getFieldValue('input-manager', 'custom-manager');
+            record.managerSignature = currentSignatures.manager || null;
+            record.shifts[shiftNum] = {
+                sender: getFieldValue('input-sender', 'custom-sender'),
+                receiver: getFieldValue('input-receiver', 'custom-receiver'),
+                senderSignature: currentSignatures.sender || null,
+                receiverSignature: currentSignatures.receiver || null,
+                tools: (() => {
+                    const cloned = {};
+                    MASTER_TOOLS.forEach(t => {
+                        const st = currentToolsState[t.id] || { receive: t.std, deliver: t.std };
+                        const rVal = parseInt(st.receive, 10);
+                        const dVal = parseInt(st.deliver, 10);
+                        cloned[t.id] = {
+                            receive: isNaN(rVal) ? t.std : rVal,
+                            deliver: isNaN(dVal) ? t.std : dVal
+                        };
+                    });
+                    return cloned;
+                })(),
+                savedAt: new Date().toISOString()
+            };
+            localStorage.setItem(getRecordKey(), JSON.stringify(record));
+            saveHeaderDraft();
+            updateShiftPills(record);
+
+            const cloudUrl = getCloudWebAppUrl();
+            if (cloudUrl) {
+                const payload = buildShiftPayload(record, shiftNum);
+                sendPayloadToGoogleSheet(payload)
+                    .then(() => {
+                        const nowStr = new Date().toLocaleTimeString('th-TH');
+                        updateCloudStatusUI(`ซิงค์ขึ้น Google Sheet สำเร็จล่าสุดเมื่อ ${nowStr} (ช่วงที่ ${shiftNum})`);
+                        showToast(`บันทึกช่วงที่ ${shiftNum} และส่งขึ้น Google Sheet แล้ว`);
+                    })
+                    .catch(() => {
+                        updateCloudStatusUI(`บันทึกในเครื่องแล้ว แต่ส่งขึ้น Google Sheet ไม่สำเร็จ (ช่วงที่ ${shiftNum})`);
+                        showToast(`บันทึกช่วงที่ ${shiftNum} ในเครื่องแล้ว (รอซิงค์ Google Sheet)`);
+                    });
+            } else {
+                updateCloudStatusUI('บันทึกในเครื่องแล้ว (ยังไม่ได้ตั้งค่า Web App URL)');
+                showToast(`บันทึกข้อมูลช่วงที่ ${shiftNum} เรียบร้อยแล้ว`);
+            }
+        }
+        // ==========================================
+        // 6. TOOLS CHECKLIST RENDERING & INTERACTION
+        // ==========================================
+        function getToolStatusInfo(rVal, dVal, std) {
+            if (rVal === std && dVal === std) {
+                return {
+                    cardClass: "rounded-xl p-3 border-2 border-emerald-400 bg-emerald-50/60 transition-all",
+                    badgeHTML: '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">ปกติ</span>'
+                };
+            }
+            const hasLess = (rVal < std || dVal < std);
+            const hasMore = (rVal > std || dVal > std);
+            if (hasLess && hasMore) {
+                return {
+                    cardClass: "rounded-xl p-3 border-2 border-rose-400 bg-rose-50/50 transition-all",
+                    badgeHTML: '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">ไม่ตรงมาตรฐาน (น้อยกว่า/มากกว่า)</span>'
+                };
+            }
+            if (hasLess) {
+                return {
+                    cardClass: "rounded-xl p-3 border-2 border-rose-400 bg-rose-50/50 transition-all",
+                    badgeHTML: '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">น้อยกว่ามาตรฐาน</span>'
+                };
+            }
+            return {
+                cardClass: "rounded-xl p-3 border-2 border-amber-400 bg-amber-50/50 transition-all",
+                badgeHTML: '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">มากกว่ามาตรฐาน</span>'
+            };
+        }
+        function setCategoryFilter(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = "cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-pea-purple text-white shadow-sm";
+                } else {
+                    btn.className = "cat-btn shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200";
+                }
+            });
+            renderToolsList();
+        }
+        function resetToStandard() {
+            initToolsState();
+            renderToolsList();
+            showToast("คืนค่าจำนวนมาตรฐานครบทั้ง 64 รายการแล้ว");
+        }
+        function updateToolQty(toolId, field, deltaOrVal, isDirect = false) {
+            let val = isDirect ? parseInt(deltaOrVal, 10) : (currentToolsState[toolId][field] + deltaOrVal);
+            if (isNaN(val) || val < 0) val = 0;
+            currentToolsState[toolId][field] = val;
+            const inpEl = document.getElementById(`inp-${field}-${toolId}`);
+            if (inpEl) inpEl.value = val;
+            const tool = MASTER_TOOLS.find(t => t.id === toolId);
+            const cardEl = document.getElementById(`tool-card-${toolId}`);
+            const badgeEl = document.getElementById(`tool-badge-${toolId}`);
+            const rVal = currentToolsState[toolId].receive;
+            const dVal = currentToolsState[toolId].deliver;
+            const statusInfo = getToolStatusInfo(rVal, dVal, tool.std);
+            if (cardEl) {
+                cardEl.className = statusInfo.cardClass;
+            }
+            if (badgeEl) {
+                badgeEl.innerHTML = statusInfo.badgeHTML;
+            }
+            updateSummaryStats();
+        }
+        function updateSummaryStats() {
+            let diffCount = 0;
+            MASTER_TOOLS.forEach(t => {
+                const state = currentToolsState[t.id];
+                if (state.receive !== t.std || state.deliver !== t.std) {
+                    diffCount++;
+                }
+            });
+            document.getElementById('stat-normal').textContent = 64 - diffCount;
+            document.getElementById('stat-diff').textContent = diffCount;
+        }
+        function renderToolsList() {
+            const container = document.getElementById('tools-container');
+            const keyword = document.getElementById('search-tool').value.trim().toLowerCase();
+            container.innerHTML = '';
+            let lastCat = null;
+            MASTER_TOOLS.forEach(tool => {
+                if (currentCategory !== 'all' && String(tool.cat) !== currentCategory) return;
+                if (keyword && !tool.name.toLowerCase().includes(keyword) && String(tool.id) !== keyword) return;
+                if (tool.cat !== lastCat) {
+                    lastCat = tool.cat;
+                    const catHeader = document.createElement('div');
+                    catHeader.className = "bg-pea-light border-l-4 border-pea-purple px-3 py-2 rounded-r-xl text-xs font-bold text-pea-dark mt-3 mb-1.5";
+                    catHeader.textContent = CATEGORIES[tool.cat];
+                    container.appendChild(catHeader);
+                }
+                const state = currentToolsState[tool.id];
+                const statusInfo = getToolStatusInfo(state.receive, state.deliver, tool.std);
+                const card = document.createElement('div');
+                card.id = `tool-card-${tool.id}`;
+                card.className = statusInfo.cardClass;
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="inline-flex items-center justify-center bg-pea-purple text-white text-[11px] font-bold px-2 py-0.5 rounded-md">
+                                    #${tool.id} (ข้อ ${tool.catNo})
+                                </span>
+                                <span class="text-xs font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-md">
+                                    มาตรฐาน: <b>${tool.std}</b> ${tool.unit}
+                                </span>
+                                <span id="tool-badge-${tool.id}">
+                                    ${statusInfo.badgeHTML}
+                                </span>
+                            </div>
+                            <h3 class="text-sm font-semibold text-gray-900 mt-1.5 leading-snug">${tool.name}</h3>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 mt-3 pt-2.5 border-t border-gray-100">
+                        <!-- รับมอบ -->
+                        <div class="bg-blue-50/60 p-2 rounded-xl border border-blue-100">
+                            <div class="text-[11px] font-bold text-blue-800 text-center mb-1">รับมอบ (${tool.unit})</div>
+                            <div class="flex items-center justify-between gap-1">
+                                <button type="button" onclick="updateToolQty(${tool.id}, 'receive', -1)" class="w-9 h-9 rounded-lg bg-white border border-blue-200 text-blue-700 font-bold text-lg flex items-center justify-center active:bg-blue-100 shadow-sm">-</button>
+                                <input type="number" inputmode="numeric" id="inp-receive-${tool.id}" value="${state.receive}" onchange="updateToolQty(${tool.id}, 'receive', this.value, true)" class="w-12 h-9 text-center font-bold text-base bg-white border border-blue-200 rounded-lg focus:outline-none focus:border-blue-500">
+                                <button type="button" onclick="updateToolQty(${tool.id}, 'receive', 1)" class="w-9 h-9 rounded-lg bg-white border border-blue-200 text-blue-700 font-bold text-lg flex items-center justify-center active:bg-blue-100 shadow-sm">+</button>
+                            </div>
+                        </div>
+                        <!-- ส่งมอบ -->
+                        <div class="bg-amber-50/60 p-2 rounded-xl border border-amber-100">
+                            <div class="text-[11px] font-bold text-amber-800 text-center mb-1">ส่งมอบ (${tool.unit})</div>
+                            <div class="flex items-center justify-between gap-1">
+                                <button type="button" onclick="updateToolQty(${tool.id}, 'deliver', -1)" class="w-9 h-9 rounded-lg bg-white border border-amber-200 text-amber-700 font-bold text-lg flex items-center justify-center active:bg-amber-100 shadow-sm">-</button>
+                                <input type="number" inputmode="numeric" id="inp-deliver-${tool.id}" value="${state.deliver}" onchange="updateToolQty(${tool.id}, 'deliver', this.value, true)" class="w-12 h-9 text-center font-bold text-base bg-white border border-amber-200 rounded-lg focus:outline-none focus:border-amber-500">
+                                <button type="button" onclick="updateToolQty(${tool.id}, 'deliver', 1)" class="w-9 h-9 rounded-lg bg-white border border-amber-200 text-amber-700 font-bold text-lg flex items-center justify-center active:bg-amber-100 shadow-sm">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            if (container.children.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-sm text-gray-400">ไม่พบรายการเครื่องมือที่ค้นหา</div>`;
+            }
+            updateSummaryStats();
+        }
+        // ==========================================
+        // 7. OFFICIAL REPORT GENERATION & EXPORT
+        // ==========================================
+        function buildOfficialReportHTML() {
+            const record = getDailyRecord();
+            const branch = getFieldValue('input-branch', 'custom-branch');
+            const vehicleType = getFieldValue('input-vehicle-type', 'custom-vehicle-type');
+            const license = getFieldValue('input-license', 'custom-license');
+            const thaiDate = formatThaiDate(document.getElementById('input-date').value);
+            const manager = getFieldValue('input-manager', 'custom-manager');
+            const s1 = record.shifts[1];
+            const s2 = record.shifts[2];
+            const s3 = record.shifts[3];
+            let rowsHTML = '';
+            let lastCat = null;
+            MASTER_TOOLS.forEach(tool => {
+                if (tool.cat !== lastCat) {
+                    lastCat = tool.cat;
+                    rowsHTML += `
+                        <tr>
+                            <td colspan="11" style="background-color: #e5e7eb; font-weight: bold; text-align: left; padding: 4px 6px;">
+                                ${CATEGORIES[tool.cat]}
+                            </td>
+                        </tr>
+                    `;
+                }
+                const r1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].receive : '';
+                const d1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].deliver : '';
+                const r2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].receive : '';
+                const d2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].deliver : '';
+                const r3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].receive : '';
+                const d3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].deliver : '';
+                rowsHTML += `
+                    <tr>
+                        <td style="text-align: center;">${tool.id}</td>
+                        <td style="text-align: center;">${tool.catNo}</td>
+                        <td style="text-align: left;">${tool.name}</td>
+                        <td class="col-unit" style="text-align: center; white-space: nowrap;">${tool.unit}</td>
+                        <td style="text-align: center; font-weight: bold;">${tool.std}</td>
+                        <td style="text-align: center;">${d1}</td>
+                        <td style="text-align: center;">${r1}</td>
+                        <td style="text-align: center;">${d2}</td>
+                        <td style="text-align: center;">${r2}</td>
+                        <td style="text-align: center;">${d3}</td>
+                        <td style="text-align: center;">${r3}</td>
+                    </tr>
+                `;
+            });
+            const sender1 = s1 ? s1.sender : '........................................';
+            const receiver1 = s1 ? s1.receiver : '........................................';
+            const sender2 = s2 ? s2.sender : '........................................';
+            const receiver2 = s2 ? s2.receiver : '........................................';
+            const sender3 = s3 ? s3.sender : '........................................';
+            const receiver3 = s3 ? s3.receiver : '........................................';
+            const mgrText = (manager && manager !== '-') ? manager : '........................................';
+            return `
+                <div style="font-family: 'Sarabun', sans-serif; color: #000; width: 100%; max-width: 100%;">
+                    <div style="text-align: center; font-weight: bold; font-size: 12px; white-space: nowrap; margin-bottom: 4px;">
+                        แบบฟอร์มเอกสารส่งมอบเครื่องมือมาตรฐานสำหรับงานแก้ไฟฟ้าขัดข้องประจำรถยนต์กระเช้าแก้ไฟ 4 ตัน จำนวน 64 รายการ
+                    </div>
+                    <div style="text-align: center; font-weight: bold; font-size: 12px; white-space: nowrap; margin-bottom: 8px;">
+                        การไฟฟ้าส่วนภูมิภาคเขต 2 ภาคใต้ จังหวัดนครศรีธรรมราช
+                    </div>
+                    <div style="font-size: 12px; margin-bottom: 8px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;">
+                        <span><strong>การไฟฟ้าส่วนภูมิภาค:</strong> ${branch}</span>
+                        <span><strong>ประจำรถ:</strong> ${vehicleType}</span>
+                        <span><strong>หมายเลขทะเบียน:</strong> ${license}</span>
+                        <span><strong>ประจำวันที่:</strong> ${thaiDate}</span>
+                    </div>
+                    <table class="official-form" border="1" cellspacing="0" cellpadding="3">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="white-space: nowrap;">ลำดับ</th>
+                                <th rowspan="2" style="white-space: nowrap;">ที่</th>
+                                <th rowspan="2" style="white-space: nowrap;">รายการมาตรฐาน</th>
+                                <th rowspan="2" style="white-space: nowrap;">หน่วย</th>
+                                <th rowspan="2" class="col-std" style="white-space: normal;">จำนวน<br>มาตรฐาน</th>
+                                <th colspan="2">ช่วงที่ 1<br>00.30 - 08.30</th>
+                                <th colspan="2">ช่วงที่ 2<br>08.30 - 16.30</th>
+                                <th colspan="2">ช่วงที่ 3<br>16.30 - 00.30</th>
+                            </tr>
+                            <tr>
+                                <th>ส่งมอบ</th>
+                                <th>รับมอบ</th>
+                                <th>ส่งมอบ</th>
+                                <th>รับมอบ</th>
+                                <th>ส่งมอบ</th>
+                                <th>รับมอบ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHTML}
+                        </tbody>
+                    </table>
+                    <!-- Signature Block -->
+                    <table style="width: 100%; max-width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; font-family: 'Sarabun', sans-serif;">
+                        <tr>
+                            <td style="width: 33.3%; border: 1px solid #000; padding: 6px; vertical-align: top;">
+                                <div style="font-weight: bold; text-align: center; margin-bottom: 6px;">ช่วงที่ 1 เวลา 00.30 - 08.30 น.</div>
+                                <div style="margin-bottom: 6px;">ลงชื่อ${renderSignatureSlotHTML(sender1, s1 && s1.senderSignature, false)}ผู้ส่งมอบ<br><span style="padding-left: 24px;">(${sender1})</span></div>
+                                <div>ลงชื่อ${renderSignatureSlotHTML(receiver1, s1 && s1.receiverSignature, false)}ผู้รับมอบ<br><span style="padding-left: 24px;">(${receiver1})</span></div>
+                            </td>
+                            <td style="width: 33.3%; border: 1px solid #000; padding: 6px; vertical-align: top;">
+                                <div style="font-weight: bold; text-align: center; margin-bottom: 6px;">ช่วงที่ 2 เวลา 08.30 - 16.30 น.</div>
+                                <div style="margin-bottom: 6px;">ลงชื่อ${renderSignatureSlotHTML(sender2, s2 && s2.senderSignature, false)}ผู้ส่งมอบ<br><span style="padding-left: 24px;">(${sender2})</span></div>
+                                <div>ลงชื่อ${renderSignatureSlotHTML(receiver2, s2 && s2.receiverSignature, false)}ผู้รับมอบ<br><span style="padding-left: 24px;">(${receiver2})</span></div>
+                            </td>
+                            <td style="width: 33.3%; border: 1px solid #000; padding: 6px; vertical-align: top;">
+                                <div style="font-weight: bold; text-align: center; margin-bottom: 6px;">ช่วงที่ 3 เวลา 16.30 - 00.30 น.</div>
+                                <div style="margin-bottom: 6px;">ลงชื่อ${renderSignatureSlotHTML(sender3, s3 && s3.senderSignature, false)}ผู้ส่งมอบ<br><span style="padding-left: 24px;">(${sender3})</span></div>
+                                <div>ลงชื่อ${renderSignatureSlotHTML(receiver3, s3 && s3.receiverSignature, false)}ผู้รับมอบ<br><span style="padding-left: 24px;">(${receiver3})</span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="border: 1px solid #000; padding: 8px; text-align: center;">
+                                <div style="margin-top: 8px;">ลงชื่อ${renderSignatureSlotHTML(mgrText, record.managerSignature, true)}ผจก.ลงนาม</div>
+                                <div>(${mgrText})</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+        function renderReportPreview() {
+            document.getElementById('print-area').innerHTML = buildOfficialReportHTML();
+        }
+        function exportPDF() {
+            renderReportPreview();
+            const originalTitle = document.title;
+            const dateStr = document.getElementById('input-date').value || new Date().toISOString().slice(0, 10);
+            const pdfFileName = `แบบฟอร์มส่งมอบเครื่องมือ_64รายการ_${dateStr}`;
+            document.title = pdfFileName;
+            const restoreTitle = () => {
+                document.title = originalTitle;
+                window.removeEventListener('afterprint', restoreTitle);
+            };
+            window.addEventListener('afterprint', restoreTitle);
+            setTimeout(() => {
+                window.print();
+                setTimeout(() => {
+                    document.title = originalTitle;
+                }, 1500);
+            }, 200);
+        }
+        function xmlEscape(str) {
+            return String(str === null || str === undefined ? '' : str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function exportExcel() {
+            const record = getDailyRecord();
+            const branch = getFieldValue('input-branch', 'custom-branch');
+            const vehicleType = getFieldValue('input-vehicle-type', 'custom-vehicle-type');
+            const license = getFieldValue('input-license', 'custom-license');
+            const thaiDate = formatThaiDate(document.getElementById('input-date').value);
+            const manager = getFieldValue('input-manager', 'custom-manager');
+            const dateStr = document.getElementById('input-date').value || new Date().toISOString().slice(0, 10);
+
+            const s1 = record.shifts[1];
+            const s2 = record.shifts[2];
+            const s3 = record.shifts[3];
+
+            let rowsXml = '';
+
+            // Title Row 1 (Merged A1:K1)
+            rowsXml += `<Row ss:Height="22">
+                <Cell ss:MergeAcross="10" ss:StyleID="TitleStyle"><Data ss:Type="String">แบบฟอร์มเอกสารส่งมอบเครื่องมือมาตรฐานสำหรับงานแก้ไฟฟ้าขัดข้องประจำรถยนต์กระเช้าแก้ไฟ 4 ตัน จำนวน 64 รายการ</Data></Cell>
+            </Row>`;
+
+            // Title Row 2 (Merged A2:K2)
+            rowsXml += `<Row ss:Height="20">
+                <Cell ss:MergeAcross="10" ss:StyleID="SubTitleStyle"><Data ss:Type="String">การไฟฟ้าส่วนภูมิภาคเขต 2 ภาคใต้ จังหวัดนครศรีธรรมราช</Data></Cell>
+            </Row>`;
+
+            // Meta Row 3 (Merged across columns cleanly without overflowing 11 cols)
+            rowsXml += `<Row ss:Height="19">
+                <Cell ss:MergeAcross="3" ss:StyleID="MetaStyle"><Data ss:Type="String">การไฟฟ้าส่วนภูมิภาค: ${xmlEscape(branch)}</Data></Cell>
+                <Cell ss:MergeAcross="2" ss:StyleID="MetaStyle"><Data ss:Type="String">ประจำรถ: ${xmlEscape(vehicleType)}</Data></Cell>
+                <Cell ss:MergeAcross="1" ss:StyleID="MetaStyle"><Data ss:Type="String">หมายเลขทะเบียน: ${xmlEscape(license)}</Data></Cell>
+                <Cell ss:MergeAcross="1" ss:StyleID="MetaStyle"><Data ss:Type="String">ประจำวันที่: ${xmlEscape(thaiDate)}</Data></Cell>
+            </Row>`;
+
+            // Table Header Row 1 (Row 4)
+            rowsXml += `<Row ss:Height="28">
+                <Cell ss:MergeDown="1" ss:StyleID="HdrStyle"><Data ss:Type="String">ลำดับ</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="HdrStyle"><Data ss:Type="String">ที่</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="HdrStyle"><Data ss:Type="String">รายการมาตรฐาน</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="HdrStyle"><Data ss:Type="String">หน่วย</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="HdrStyle"><Data ss:Type="String">จำนวนมาตรฐาน</Data></Cell>
+                <Cell ss:MergeAcross="1" ss:StyleID="HdrStyle"><Data ss:Type="String">ช่วงที่ 1&#10;00.30 - 08.30</Data></Cell>
+                <Cell ss:MergeAcross="1" ss:StyleID="HdrStyle"><Data ss:Type="String">ช่วงที่ 2&#10;08.30 - 16.30</Data></Cell>
+                <Cell ss:MergeAcross="1" ss:StyleID="HdrStyle"><Data ss:Type="String">ช่วงที่ 3&#10;16.30 - 00.30</Data></Cell>
+            </Row>`;
+
+            // Table Header Row 2 (Row 5) - explicitly set ss:Index for merged cells above
+            rowsXml += `<Row ss:Height="20">
+                <Cell ss:Index="6" ss:StyleID="SubHdrStyle"><Data ss:Type="String">ส่งมอบ</Data></Cell>
+                <Cell ss:Index="7" ss:StyleID="SubHdrStyle"><Data ss:Type="String">รับมอบ</Data></Cell>
+                <Cell ss:Index="8" ss:StyleID="SubHdrStyle"><Data ss:Type="String">ส่งมอบ</Data></Cell>
+                <Cell ss:Index="9" ss:StyleID="SubHdrStyle"><Data ss:Type="String">รับมอบ</Data></Cell>
+                <Cell ss:Index="10" ss:StyleID="SubHdrStyle"><Data ss:Type="String">ส่งมอบ</Data></Cell>
+                <Cell ss:Index="11" ss:StyleID="SubHdrStyle"><Data ss:Type="String">รับมอบ</Data></Cell>
+            </Row>`;
+
+            let lastCat = null;
+            MASTER_TOOLS.forEach(tool => {
+                if (tool.cat !== lastCat) {
+                    lastCat = tool.cat;
+                    rowsXml += `<Row ss:Height="22">
+                        <Cell ss:MergeAcross="10" ss:StyleID="CatStyle"><Data ss:Type="String">${xmlEscape(CATEGORIES[tool.cat])}</Data></Cell>
+                    </Row>`;
+                }
+
+                const r1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].receive : '';
+                const d1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].deliver : '';
+                const r2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].receive : '';
+                const d2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].deliver : '';
+                const r3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].receive : '';
+                const d3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].deliver : '';
+
+                const cellVal = (v, styleId) => {
+                    if (v === '' || v === null || v === undefined) {
+                        return `<Cell ss:StyleID="${styleId}"/>`;
+                    }
+                    const isNum = !isNaN(Number(v)) && String(v).trim() !== '';
+                    const t = isNum ? 'Number' : 'String';
+                    return `<Cell ss:StyleID="${styleId}"><Data ss:Type="${t}">${xmlEscape(v)}</Data></Cell>`;
+                };
+
+                rowsXml += `<Row ss:Height="19">
+                    ${cellVal(tool.id, 'CenterCell')}
+                    ${cellVal(tool.catNo, 'CenterCell')}
+                    ${cellVal(tool.name, 'LeftCell')}
+                    ${cellVal(tool.unit, 'CenterCell')}
+                    ${cellVal(tool.std, 'BoldCenterCell')}
+                    ${cellVal(d1, 'CenterCell')}
+                    ${cellVal(r1, 'CenterCell')}
+                    ${cellVal(d2, 'CenterCell')}
+                    ${cellVal(r2, 'CenterCell')}
+                    ${cellVal(d3, 'CenterCell')}
+                    ${cellVal(r3, 'CenterCell')}
+                </Row>`;
+            });
+
+            // Blank spacer row
+            rowsXml += `<Row ss:Height="10"/>`;
+
+            const sender1 = s1 ? s1.sender : '........................................';
+            const receiver1 = s1 ? s1.receiver : '........................................';
+            const sender2 = s2 ? s2.sender : '........................................';
+            const receiver2 = s2 ? s2.receiver : '........................................';
+            const sender3 = s3 ? s3.sender : '........................................';
+            const receiver3 = s3 ? s3.receiver : '........................................';
+            const mgrText = (manager && manager !== '-') ? manager : '........................................';
+
+            const sigMark = (sigUrl) => sigUrl ? ' [มีลายเซ็นแล้ว]' : ' ........................................';
+
+            // Signature Shift Titles Row (Merged across 11 cols: 4 + 4 + 3 = 11)
+            rowsXml += `<Row ss:Height="18">
+                <Cell ss:MergeAcross="3" ss:StyleID="SigHdrStyle"><Data ss:Type="String">ช่วงที่ 1 เวลา 00.30 - 08.30 น.</Data></Cell>
+                <Cell ss:MergeAcross="3" ss:StyleID="SigHdrStyle"><Data ss:Type="String">ช่วงที่ 2 เวลา 08.30 - 16.30 น.</Data></Cell>
+                <Cell ss:MergeAcross="2" ss:StyleID="SigHdrStyle"><Data ss:Type="String">ช่วงที่ 3 เวลา 16.30 - 00.30 น.</Data></Cell>
+            </Row>`;
+
+            // Sender Row
+            rowsXml += `<Row ss:Height="28">
+                <Cell ss:MergeAcross="3" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s1 && s1.senderSignature)}ผู้ส่งมอบ&#10;      (${xmlEscape(sender1)})</Data></Cell>
+                <Cell ss:MergeAcross="3" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s2 && s2.senderSignature)}ผู้ส่งมอบ&#10;      (${xmlEscape(sender2)})</Data></Cell>
+                <Cell ss:MergeAcross="2" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s3 && s3.senderSignature)}ผู้ส่งมอบ&#10;      (${xmlEscape(sender3)})</Data></Cell>
+            </Row>`;
+
+            // Receiver Row
+            rowsXml += `<Row ss:Height="28">
+                <Cell ss:MergeAcross="3" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s1 && s1.receiverSignature)}ผู้รับมอบ&#10;      (${xmlEscape(receiver1)})</Data></Cell>
+                <Cell ss:MergeAcross="3" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s2 && s2.receiverSignature)}ผู้รับมอบ&#10;      (${xmlEscape(receiver2)})</Data></Cell>
+                <Cell ss:MergeAcross="2" ss:StyleID="SigCellStyle"><Data ss:Type="String">ลงชื่อ${sigMark(s3 && s3.receiverSignature)}ผู้รับมอบ&#10;      (${xmlEscape(receiver3)})</Data></Cell>
+            </Row>`;
+
+            // Manager Row (Merged A:K)
+            rowsXml += `<Row ss:Height="34">
+                <Cell ss:MergeAcross="10" ss:StyleID="SigMgrStyle"><Data ss:Type="String">ลงชื่อ${record.managerSignature ? ' [มีลายเซ็นแล้ว]' : ' ............................................................'}ผจก.ลงนาม&#10;(${xmlEscape(mgrText)})</Data></Cell>
+            </Row>`;
+
+            const workbookXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Title>แบบฟอร์มส่งมอบเครื่องมือมาตรฐาน 64 รายการ</Title>
+  <Author>PEA</Author>
+ </DocumentProperties>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders/>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="12" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="TitleStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="14" ss:Bold="1" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="SubTitleStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="13" ss:Bold="1" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="MetaStyle">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="12" ss:Bold="1" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="HdrStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#3D0F49" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SubHdrStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Bold="1" ss:Color="#3D0F49"/>
+   <Interior ss:Color="#F3E8FF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CatStyle">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Bold="1" ss:Color="#3D0F49"/>
+   <Interior ss:Color="#EDE9FE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CenterCell">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="BoldCenterCell">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Bold="1" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="LeftCell">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="SigHdrStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Bold="1" ss:Color="#000000"/>
+   <Interior ss:Color="#F3E8FF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SigCellStyle">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="SigMgrStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="TH SarabunPSK" x:CharSet="222" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="แบบฟอร์ม 64 รายการ">
+  <Table ss:FullColumns="1" ss:FullRows="1">
+   <Column ss:Width="38"/>
+   <Column ss:Width="28"/>
+   <Column ss:Width="255"/>
+   <Column ss:Width="44"/>
+   <Column ss:Width="52"/>
+   <Column ss:Width="38"/>
+   <Column ss:Width="38"/>
+   <Column ss:Width="38"/>
+   <Column ss:Width="38"/>
+   <Column ss:Width="38"/>
+   <Column ss:Width="38"/>
+   ${rowsXml}
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Portrait"/>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.4" x:Left="0.35" x:Right="0.35" x:Top="0.4"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <FitToWidth>1</FitToWidth>
+    <FitToHeight>0</FitToHeight>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+   </Print>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>`;
+
+            const blob = new Blob(['\ufeff', workbookXml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `แบบฟอร์มส่งมอบเครื่องมือ_64รายการ_${dateStr}.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("ดาวน์โหลดไฟล์ Excel (.xls) เรียบร้อยแล้ว");
+        }
+        function exportWord() {
+            const record = getDailyRecord();
+            const branch = getFieldValue('input-branch', 'custom-branch');
+            const vehicleType = getFieldValue('input-vehicle-type', 'custom-vehicle-type');
+            const license = getFieldValue('input-license', 'custom-license');
+            const thaiDate = formatThaiDate(document.getElementById('input-date').value);
+            const manager = getFieldValue('input-manager', 'custom-manager');
+            const dateStr = document.getElementById('input-date').value || new Date().toISOString().slice(0, 10);
+
+            const s1 = record.shifts[1];
+            const s2 = record.shifts[2];
+            const s3 = record.shifts[3];
+
+            let rowsHtml = '';
+            let lastCat = null;
+            MASTER_TOOLS.forEach(tool => {
+                if (tool.cat !== lastCat) {
+                    lastCat = tool.cat;
+                    rowsHtml += `
+                        <tr style="page-break-inside: avoid;">
+                            <td colspan="11" style="width: 532pt; background-color: #EDE9FE; color: #3D0F49; font-weight: bold; text-align: left; padding: 3pt 5pt; border: 0.75pt solid #000000; font-size: 9.5pt;">
+                                ${xmlEscape(CATEGORIES[tool.cat])}
+                            </td>
+                        </tr>
+                    `;
+                }
+                const r1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].receive : '';
+                const d1 = s1 && s1.tools[tool.id] ? s1.tools[tool.id].deliver : '';
+                const r2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].receive : '';
+                const d2 = s2 && s2.tools[tool.id] ? s2.tools[tool.id].deliver : '';
+                const r3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].receive : '';
+                const d3 = s3 && s3.tools[tool.id] ? s3.tools[tool.id].deliver : '';
+
+                rowsHtml += `
+                    <tr style="page-break-inside: avoid;">
+                        <td style="width: 28pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 2pt;">${tool.id}</td>
+                        <td style="width: 22pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 2pt;">${tool.catNo}</td>
+                        <td style="width: 190pt; text-align: left; border: 0.75pt solid #000000; padding: 1.5pt 4pt;">${xmlEscape(tool.name)}</td>
+                        <td style="width: 34pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 2pt;">${xmlEscape(tool.unit)}</td>
+                        <td style="width: 42pt; text-align: center; font-weight: bold; border: 0.75pt solid #000000; padding: 1.5pt 2pt;">${tool.std}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(d1)}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(r1)}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(d2)}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(r2)}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(d3)}</td>
+                        <td style="width: 36pt; text-align: center; border: 0.75pt solid #000000; padding: 1.5pt 1pt;">${xmlEscape(r3)}</td>
+                    </tr>
+                `;
+            });
+
+            const sender1 = s1 ? s1.sender : '..............................';
+            const receiver1 = s1 ? s1.receiver : '..............................';
+            const sender2 = s2 ? s2.sender : '..............................';
+            const receiver2 = s2 ? s2.receiver : '..............................';
+            const sender3 = s3 ? s3.sender : '..............................';
+            const receiver3 = s3 ? s3.receiver : '..............................';
+            const mgrText = (manager && manager !== '-') ? manager : '..............................................';
+
+            const wordSig = (sigUrl, wPt, hPt, dots) => {
+                if (sigUrl) {
+                    return `<img src="${sigUrl}" width="${wPt}" height="${hPt}" style="width:${wPt}pt;height:${hPt}pt;max-width:${wPt}pt;max-height:${hPt}pt;vertical-align:middle;display:inline;" />`;
+                }
+                return dots;
+            };
+
+            const renderShiftSigBlock = (title, senderName, senderSig, receiverName, receiverSig) => `
+                <div style="font-weight: bold; text-align: center; font-size: 9.5pt; margin-bottom: 4pt;">${title}</div>
+                <div style="margin-bottom: 5pt; line-height: 1.3;">
+                    ลงชื่อ ${wordSig(senderSig, 62, 16, '..........................')} ผู้ส่งมอบ<br>
+                    <span style="padding-left: 14pt;">(${xmlEscape(senderName)})</span>
+                </div>
+                <div style="line-height: 1.3;">
+                    ลงชื่อ ${wordSig(receiverSig, 62, 16, '..........................')} ผู้รับมอบ<br>
+                    <span style="padding-left: 14pt;">(${xmlEscape(receiverName)})</span>
+                </div>
+            `;
+
+            const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>แบบฟอร์มส่งมอบเครื่องมือมาตรฐาน 64 รายการ</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page Section1 {
+    size: 21cm 29.7cm;
+    margin: 1.0cm 1.0cm 1.0cm 1.0cm;
+    mso-header-margin: 0.4cm;
+    mso-footer-margin: 0.4cm;
+}
+div.Section1 {
+    page: Section1;
+    width: 532pt;
+}
+body {
+    font-family: "TH SarabunPSK", "Sarabun", sans-serif;
+    font-size: 10.5pt;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+p.title-main {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12.5pt;
+    margin: 0 0 2pt 0;
+    width: 532pt;
+}
+p.title-sub {
+    text-align: center;
+    font-weight: bold;
+    font-size: 11.5pt;
+    margin: 0 0 6pt 0;
+    width: 532pt;
+}
+table.meta-tbl {
+    width: 532pt;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-bottom: 6pt;
+    font-size: 10.5pt;
+}
+table.meta-tbl td {
+    padding: 1.5pt 3pt;
+    border: none;
+    word-wrap: break-word;
+}
+table.data-tbl {
+    width: 532pt;
+    table-layout: fixed;
+    border-collapse: collapse;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    font-size: 9.5pt;
+}
+table.data-tbl thead {
+    display: table-header-group;
+}
+table.data-tbl th {
+    background-color: #3D0F49;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border: 0.75pt solid #000000;
+    padding: 2.5pt 1.5pt;
+    font-size: 9pt;
+    word-wrap: break-word;
+}
+table.data-tbl th.sub-hdr {
+    background-color: #F3E8FF;
+    color: #3D0F49;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border: 0.75pt solid #000000;
+    padding: 2pt 1pt;
+    font-size: 8.5pt;
+}
+table.sig-tbl {
+    width: 532pt;
+    table-layout: fixed;
+    border-collapse: collapse;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    margin-top: 8pt;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+}
+table.sig-tbl td {
+    border: 0.75pt solid #000000;
+    padding: 5pt 5pt;
+    vertical-align: top;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div class="Section1">
+    <p class="title-main">แบบฟอร์มเอกสารส่งมอบเครื่องมือมาตรฐานสำหรับงานแก้ไฟฟ้าขัดข้องประจำรถยนต์กระเช้าแก้ไฟ 4 ตัน จำนวน 64 รายการ</p>
+    <p class="title-sub">การไฟฟ้าส่วนภูมิภาคเขต 2 ภาคใต้ จังหวัดนครศรีธรรมราช</p>
+
+    <table class="meta-tbl">
+        <tr>
+            <td style="width: 266pt;"><strong>การไฟฟ้าส่วนภูมิภาค:</strong> ${xmlEscape(branch)}</td>
+            <td style="width: 266pt;"><strong>ประจำรถ:</strong> ${xmlEscape(vehicleType)}</td>
+        </tr>
+        <tr>
+            <td style="width: 266pt;"><strong>หมายเลขทะเบียน:</strong> ${xmlEscape(license)}</td>
+            <td style="width: 266pt;"><strong>ประจำวันที่:</strong> ${xmlEscape(thaiDate)}</td>
+        </tr>
+    </table>
+
+    <table class="data-tbl" border="1" cellspacing="0" cellpadding="2">
+        <thead>
+            <tr>
+                <th rowspan="2" style="width: 28pt;">ลำดับ</th>
+                <th rowspan="2" style="width: 22pt;">ที่</th>
+                <th rowspan="2" style="width: 190pt;">รายการมาตรฐาน</th>
+                <th rowspan="2" style="width: 34pt;">หน่วย</th>
+                <th rowspan="2" style="width: 42pt;">จำนวน<br>มาตรฐาน</th>
+                <th colspan="2" style="width: 72pt;">ช่วงที่ 1<br>00.30-08.30</th>
+                <th colspan="2" style="width: 72pt;">ช่วงที่ 2<br>08.30-16.30</th>
+                <th colspan="2" style="width: 72pt;">ช่วงที่ 3<br>16.30-00.30</th>
+            </tr>
+            <tr>
+                <th class="sub-hdr" style="width: 36pt;">ส่งมอบ</th>
+                <th class="sub-hdr" style="width: 36pt;">รับมอบ</th>
+                <th class="sub-hdr" style="width: 36pt;">ส่งมอบ</th>
+                <th class="sub-hdr" style="width: 36pt;">รับมอบ</th>
+                <th class="sub-hdr" style="width: 36pt;">ส่งมอบ</th>
+                <th class="sub-hdr" style="width: 36pt;">รับมอบ</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${rowsHtml}
+        </tbody>
+    </table>
+
+    <table class="sig-tbl" border="1" cellspacing="0" cellpadding="5">
+        <tr>
+            <td style="width: 178pt;">${renderShiftSigBlock('ช่วงที่ 1 เวลา 00.30 - 08.30 น.', sender1, s1 && s1.senderSignature, receiver1, s1 && s1.receiverSignature)}</td>
+            <td style="width: 178pt;">${renderShiftSigBlock('ช่วงที่ 2 เวลา 08.30 - 16.30 น.', sender2, s2 && s2.senderSignature, receiver2, s2 && s2.receiverSignature)}</td>
+            <td style="width: 176pt;">${renderShiftSigBlock('ช่วงที่ 3 เวลา 16.30 - 00.30 น.', sender3, s3 && s3.senderSignature, receiver3, s3 && s3.receiverSignature)}</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="width: 532pt; text-align: center; padding: 6pt;">
+                <div style="margin-top: 2pt; line-height: 1.35;">ลงชื่อ ${wordSig(record.managerSignature, 90, 22, '..............................................')} ผจก.ลงนาม</div>
+                <div style="line-height: 1.35;">(${xmlEscape(mgrText)})</div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>`;
+
+            const blob = new Blob(['\ufeff', wordHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `แบบฟอร์มส่งมอบเครื่องมือ_64รายการ_${dateStr}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("ดาวน์โหลดไฟล์ Word (.doc) เรียบร้อยแล้ว");
+        }
+        // ==========================================
+        // 8. NAVIGATION & SETTINGS MANAGEMENT
+        // ==========================================
+        function switchTab(tabName) {
+            ['form', 'report', 'settings'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                nav.className = "flex flex-col items-center justify-center space-y-1 text-gray-500 hover:text-pea-purple border-t-2 border-transparent";
+            });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            activeNav.className = "flex flex-col items-center justify-center space-y-1 text-pea-purple font-semibold border-t-2 border-pea-purple bg-purple-50/30";
+            if (tabName === 'report') {
+                renderReportPreview();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function renderSettingsLists() {
+            const keys = ['branches', 'vehicleTypes', 'licenses', 'staff', 'managers'];
+            keys.forEach(key => {
+                const container = document.getElementById(`list-${key}`);
+                container.innerHTML = '';
+                appOptions[key].forEach((item, index) => {
+                    const chip = document.createElement('div');
+                    chip.className = "inline-flex items-center gap-1.5 bg-gray-100 text-gray-800 text-xs px-3 py-1.5 rounded-full border border-gray-200";
+                    chip.innerHTML = `
+                        <span>${item}</span>
+                        <button type="button" onclick="removeOption('${key}', ${index})" class="text-rose-500 hover:text-rose-700 font-bold ml-1">×</button>
+                    `;
+                    container.appendChild(chip);
+                });
+            });
+        }
+        function addOption(key, inputId) {
+            const inp = document.getElementById(inputId);
+            const val = inp.value.trim();
+            if (!val) return;
+            if (!appOptions[key].includes(val)) {
+                appOptions[key].push(val);
+                localStorage.setItem('pea_tool_options', JSON.stringify(appOptions));
+                populateAllDropdowns();
+                renderSettingsLists();
+                showToast("เพิ่มตัวเลือกเรียบร้อยแล้ว");
+            }
+            inp.value = '';
+        }
+        function removeOption(key, index) {
+            if (appOptions[key].length <= 1) {
+                showToast("ต้องมีตัวเลือกอย่างน้อย 1 รายการ");
+                return;
+            }
+            appOptions[key].splice(index, 1);
+            localStorage.setItem('pea_tool_options', JSON.stringify(appOptions));
+            populateAllDropdowns();
+            renderSettingsLists();
+            showToast("ลบตัวเลือกแล้ว");
+        }
+        function resetDefaultOptions() {
+            appOptions = JSON.parse(JSON.stringify(DEFAULT_OPTIONS));
+            localStorage.setItem('pea_tool_options', JSON.stringify(appOptions));
+            populateAllDropdowns();
+            renderSettingsLists();
+            showToast("คืนค่าตัวเลือกเริ่มต้นทั้งหมดแล้ว");
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
