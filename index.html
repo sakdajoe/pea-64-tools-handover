@@ -1219,16 +1219,6 @@
                 setSignatureData('sender', null);
                 setSignatureData('receiver', null);
                 initToolsState();
-                const prevShift = shiftNum === '2' ? '1' : (shiftNum === '3' ? '2' : null);
-                if (prevShift && record.shifts && record.shifts[prevShift]) {
-                    const prevTools = record.shifts[prevShift].tools;
-                    MASTER_TOOLS.forEach(t => {
-                        if (prevTools[t.id]) {
-                            currentToolsState[t.id].receive = prevTools[t.id].deliver;
-                            currentToolsState[t.id].deliver = prevTools[t.id].deliver;
-                        }
-                    });
-                }
             }
             renderToolsList();
         }
