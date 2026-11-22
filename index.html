@@ -155,7 +155,7 @@
             <div class="flex items-center space-x-1.5">
                 <button type="button" onclick="loadDayData(true)" title="ดึงข้อมูลล่าสุดจาก Google Sheet" class="text-[11px] bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-full border border-white/20 flex items-center gap-1 transition active:scale-95">
                     <i data-lucide="refresh-cw" class="w-3 h-3"></i>
-                    <span id="header-status-badge">พร้อมบันทึก</span>
+                    <span id="header-status-badge">Refresh</span>
                 </button>
             </div>
         </div>
@@ -184,15 +184,11 @@
                         <span id="saved-shifts-count" class="text-xs font-medium text-gray-500 mr-1">บันทึกแล้ว 0/3 ช่วงเวลา</span>
                         <button type="button" id="btn-undo" onclick="undoHistory()" disabled title="ย้อนกลับข้อมูลที่กรอกหรือแก้ไขล่าสุด" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
                             <i data-lucide="undo-2" class="w-3.5 h-3.5"></i>
-                            <span>ย้อนกลับ</span>
+                            <span>Undo</span>
                         </button>
                         <button type="button" id="btn-redo" onclick="redoHistory()" disabled title="ทำซ้ำข้อมูลที่ย้อนกลับไป" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
                             <i data-lucide="redo-2" class="w-3.5 h-3.5"></i>
-                            <span>ทำซ้ำ</span>
-                        </button>
-                        <button type="button" onclick="loadDayData(true)" class="text-xs bg-pea-light text-pea-dark border border-purple-300 hover:bg-purple-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                            <span>รีเฟรช</span>
+                            <span>Redo</span>
                         </button>
                     </div>
                 </div>
@@ -223,11 +219,21 @@
 
             <!-- Section 1: Header Details -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3.5">
-                <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-2">
                     <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5">
                         <i data-lucide="file-text" class="w-4 h-4 text-pea-gold"></i>
                         1. ข้อมูลทั่วไปและช่วงเวลาเข้าเวร
                     </h2>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" id="btn-undo-sec1" onclick="undoSection('sec1')" disabled title="ย้อนกลับข้อมูลหัวข้อที่ 1" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                            <i data-lucide="undo-2" class="w-3.5 h-3.5"></i>
+                            <span>Undo</span>
+                        </button>
+                        <button type="button" id="btn-redo-sec1" onclick="redoSection('sec1')" disabled title="ทำซ้ำข้อมูลหัวข้อที่ 1" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                            <i data-lucide="redo-2" class="w-3.5 h-3.5"></i>
+                            <span>Redo</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <!-- การไฟฟ้าส่วนภูมิภาค -->
@@ -307,9 +313,19 @@
                         </h2>
                         <p class="text-[11px] text-gray-500 mt-0.5">ตั้งค่าเริ่มต้นตามจำนวนมาตรฐานแล้ว แก้ไขเฉพาะรายการที่เปลี่ยนแปลง</p>
                     </div>
-                    <button type="button" onclick="resetToStandard()" class="text-xs bg-pea-goldLight text-amber-900 border border-amber-300 hover:bg-amber-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
-                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> ตั้งค่าเป็นมาตรฐานทั้งหมด
-                    </button>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <button type="button" id="btn-undo-sec2" onclick="undoSection('sec2')" disabled title="ย้อนกลับรายการเครื่องมือหัวข้อที่ 2" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                            <i data-lucide="undo-2" class="w-3.5 h-3.5"></i>
+                            <span>Undo</span>
+                        </button>
+                        <button type="button" id="btn-redo-sec2" onclick="redoSection('sec2')" disabled title="ทำซ้ำรายการเครื่องมือหัวข้อที่ 2" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                            <i data-lucide="redo-2" class="w-3.5 h-3.5"></i>
+                            <span>Redo</span>
+                        </button>
+                        <button type="button" onclick="resetToStandard()" class="text-xs bg-pea-goldLight text-amber-900 border border-amber-300 hover:bg-amber-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> ตั้งค่าเป็นมาตรฐานทั้งหมด
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Summary Counters -->
@@ -350,17 +366,27 @@
 
             <!-- Section 3: Live Signature Pad -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3.5">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-2">
-                    <div>
-                        <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5">
-                            <i data-lucide="pen-tool" class="w-4 h-4 text-pea-gold"></i>
-                            3. วาดลายเซ็นสดบนหน้าจอ (ผู้ส่งมอบ / ผู้รับมอบ / ผจก.)
+                <div class="border-b border-gray-100 pb-2 space-y-1">
+                    <div class="flex items-center justify-between gap-2">
+                        <h2 class="text-sm font-bold text-pea-purple flex items-center gap-1.5 min-w-0">
+                            <i data-lucide="pen-tool" class="w-4 h-4 text-pea-gold shrink-0"></i>
+                            <span class="truncate">3. วาดลายเซ็นสดบนหน้าจอ (ผู้ส่งมอบ / ผู้รับมอบ / ผจก.)</span>
                         </h2>
-                        <p class="text-[11px] text-gray-500 mt-0.5">เซ็นด้วยนิ้วบนมือถือ/แท็บเล็ต หรือเมาส์ ลายเซ็นจะแสดงในรายงาน PDF, Excel และ Word อัตโนมัติ</p>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" id="btn-undo-sec3" onclick="undoSection('sec3')" disabled title="ย้อนกลับลายเซ็นหัวข้อที่ 3" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                                <i data-lucide="undo-2" class="w-3.5 h-3.5"></i>
+                                <span>Undo</span>
+                            </button>
+                            <button type="button" id="btn-redo-sec3" onclick="redoSection('sec3')" disabled title="ทำซ้ำลายเซ็นหัวข้อที่ 3" class="text-xs bg-purple-50 text-pea-purple border border-purple-200 hover:bg-purple-100 font-medium px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+                                <i data-lucide="redo-2" class="w-3.5 h-3.5"></i>
+                                <span>Redo</span>
+                            </button>
+                            <button type="button" onclick="clearAllSignatures()" class="text-xs bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> ล้างทั้งหมด
+                            </button>
+                        </div>
                     </div>
-                    <button type="button" onclick="clearAllSignatures()" class="text-xs bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 transition active:scale-95">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> ล้างทั้งหมด
-                    </button>
+                    <p class="text-[11px] text-gray-500">เซ็นด้วยนิ้วบนมือถือ/แท็บเล็ต หรือเมาส์ ลายเซ็นจะแสดงในรายงาน PDF, Excel และ Word อัตโนมัติ</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -663,22 +689,19 @@
         let currentCategory = 'all';
         let currentToolsState = {};
 
-        // Undo / Redo History Stack
+        // Global & Per-Section Undo / Redo History Stacks
         let historyStack = [];
         let historyIndex = -1;
         let isApplyingHistory = false;
         const MAX_HISTORY = 60;
 
-        function captureFormSnapshot() {
-            const toolsCopy = {};
-            MASTER_TOOLS.forEach(t => {
-                const st = currentToolsState[t.id] || { receive: t.std, deliver: t.std };
-                toolsCopy[t.id] = {
-                    receive: parseInt(st.receive, 10) || 0,
-                    deliver: parseInt(st.deliver, 10) || 0
-                };
-            });
+        const sectionHistories = {
+            sec1: { stack: [], index: -1 },
+            sec2: { stack: [], index: -1 },
+            sec3: { stack: [], index: -1 }
+        };
 
+        function captureSection1Snapshot() {
             return {
                 branchSel: document.getElementById('input-branch').value,
                 branchCustom: document.getElementById('custom-branch').value,
@@ -693,13 +716,35 @@
                 receiverSel: document.getElementById('input-receiver').value,
                 receiverCustom: document.getElementById('custom-receiver').value,
                 managerSel: document.getElementById('input-manager').value,
-                managerCustom: document.getElementById('custom-manager').value,
-                tools: toolsCopy,
-                signatures: {
-                    sender: currentSignatures.sender || null,
-                    receiver: currentSignatures.receiver || null,
-                    manager: currentSignatures.manager || null
-                }
+                managerCustom: document.getElementById('custom-manager').value
+            };
+        }
+
+        function captureSection2Snapshot() {
+            const toolsCopy = {};
+            MASTER_TOOLS.forEach(t => {
+                const st = currentToolsState[t.id] || { receive: t.std, deliver: t.std };
+                toolsCopy[t.id] = {
+                    receive: parseInt(st.receive, 10) || 0,
+                    deliver: parseInt(st.deliver, 10) || 0
+                };
+            });
+            return toolsCopy;
+        }
+
+        function captureSection3Snapshot() {
+            return {
+                sender: currentSignatures.sender || null,
+                receiver: currentSignatures.receiver || null,
+                manager: currentSignatures.manager || null
+            };
+        }
+
+        function captureFormSnapshot() {
+            return {
+                ...captureSection1Snapshot(),
+                tools: captureSection2Snapshot(),
+                signatures: captureSection3Snapshot()
             };
         }
 
@@ -708,9 +753,31 @@
             return JSON.stringify(a) === JSON.stringify(b);
         }
 
+        function pushSectionState(secKey, snap) {
+            const h = sectionHistories[secKey];
+            if (!h) return;
+            if (h.index >= 0 && isSameSnapshot(h.stack[h.index], snap)) return;
+            if (h.index < h.stack.length - 1) {
+                h.stack = h.stack.slice(0, h.index + 1);
+            }
+            h.stack.push(snap);
+            if (h.stack.length > MAX_HISTORY) {
+                h.stack.shift();
+            }
+            h.index = h.stack.length - 1;
+        }
+
         function recordHistory() {
             if (isApplyingHistory) return;
-            const snap = captureFormSnapshot();
+            const s1 = captureSection1Snapshot();
+            const s2 = captureSection2Snapshot();
+            const s3 = captureSection3Snapshot();
+
+            pushSectionState('sec1', s1);
+            pushSectionState('sec2', s2);
+            pushSectionState('sec3', s3);
+
+            const snap = { ...s1, tools: s2, signatures: s3 };
             if (historyIndex >= 0 && isSameSnapshot(historyStack[historyIndex], snap)) {
                 updateUndoRedoButtons();
                 return;
@@ -727,73 +794,157 @@
         }
 
         function resetHistoryWithCurrentState() {
-            const snap = captureFormSnapshot();
+            const s1 = captureSection1Snapshot();
+            const s2 = captureSection2Snapshot();
+            const s3 = captureSection3Snapshot();
+            sectionHistories.sec1 = { stack: [s1], index: 0 };
+            sectionHistories.sec2 = { stack: [s2], index: 0 };
+            sectionHistories.sec3 = { stack: [s3], index: 0 };
+
+            const snap = { ...s1, tools: s2, signatures: s3 };
             historyStack = [snap];
             historyIndex = 0;
             updateUndoRedoButtons();
+        }
+
+        function applySection1Snapshot(snap) {
+            if (!snap) return;
+            const applyField = (selId, inpId, selVal, inpVal) => {
+                const sel = document.getElementById(selId);
+                const inp = document.getElementById(inpId);
+                if (!sel || !inp) return;
+                sel.value = selVal || '';
+                inp.value = inpVal || '';
+                if (sel.value === '__CUSTOM__') {
+                    inp.classList.remove('hidden');
+                } else {
+                    inp.classList.add('hidden');
+                }
+            };
+
+            applyField('input-branch', 'custom-branch', snap.branchSel, snap.branchCustom);
+            applyField('input-vehicle-type', 'custom-vehicle-type', snap.vehicleSel, snap.vehicleCustom);
+            applyField('input-license', 'custom-license', snap.licenseSel, snap.licenseCustom);
+            applyField('input-sender', 'custom-sender', snap.senderSel, snap.senderCustom);
+            applyField('input-receiver', 'custom-receiver', snap.receiverSel, snap.receiverCustom);
+            applyField('input-manager', 'custom-manager', snap.managerSel, snap.managerCustom);
+
+            const dateInp = document.getElementById('input-date');
+            if (dateInp) {
+                dateInp.value = snap.dateVal || '';
+                document.getElementById('thai-date-preview').textContent = `วันที่: ${formatThaiDate(dateInp.value)}`;
+            }
+
+            const shiftSel = document.getElementById('input-shift');
+            if (shiftSel && snap.shiftVal) {
+                shiftSel.value = snap.shiftVal;
+                document.getElementById('save-btn-text').textContent = `บันทึกข้อมูลช่วงที่ ${snap.shiftVal}`;
+                const dateVal = document.getElementById('input-date').value;
+                const rec = dateVal ? getDailyRecord() : { shifts: { 1: null, 2: null, 3: null } };
+                updateShiftPills(rec);
+            }
+        }
+
+        function applySection2Snapshot(toolsSnap) {
+            initToolsState();
+            if (toolsSnap) {
+                MASTER_TOOLS.forEach(t => {
+                    const item = toolsSnap[t.id] || toolsSnap[String(t.id)];
+                    if (item) {
+                        currentToolsState[t.id] = {
+                            receive: parseInt(item.receive, 10) || 0,
+                            deliver: parseInt(item.deliver, 10) || 0
+                        };
+                    }
+                });
+            }
+            renderToolsList();
+        }
+
+        function applySection3Snapshot(sigsSnap) {
+            const sigs = sigsSnap || {};
+            setSignatureData('sender', sigs.sender || null);
+            setSignatureData('receiver', sigs.receiver || null);
+            setSignatureData('manager', sigs.manager || null);
         }
 
         function applySnapshot(snap) {
             if (!snap) return;
             isApplyingHistory = true;
             try {
-                const applyField = (selId, inpId, selVal, inpVal) => {
-                    const sel = document.getElementById(selId);
-                    const inp = document.getElementById(inpId);
-                    if (!sel || !inp) return;
-                    sel.value = selVal || '';
-                    inp.value = inpVal || '';
-                    if (sel.value === '__CUSTOM__') {
-                        inp.classList.remove('hidden');
-                    } else {
-                        inp.classList.add('hidden');
-                    }
-                };
-
-                applyField('input-branch', 'custom-branch', snap.branchSel, snap.branchCustom);
-                applyField('input-vehicle-type', 'custom-vehicle-type', snap.vehicleSel, snap.vehicleCustom);
-                applyField('input-license', 'custom-license', snap.licenseSel, snap.licenseCustom);
-                applyField('input-sender', 'custom-sender', snap.senderSel, snap.senderCustom);
-                applyField('input-receiver', 'custom-receiver', snap.receiverSel, snap.receiverCustom);
-                applyField('input-manager', 'custom-manager', snap.managerSel, snap.managerCustom);
-
-                const dateInp = document.getElementById('input-date');
-                if (dateInp) {
-                    dateInp.value = snap.dateVal || '';
-                    document.getElementById('thai-date-preview').textContent = `วันที่: ${formatThaiDate(dateInp.value)}`;
-                }
-
-                const shiftSel = document.getElementById('input-shift');
-                if (shiftSel && snap.shiftVal) {
-                    shiftSel.value = snap.shiftVal;
-                    document.getElementById('save-btn-text').textContent = `บันทึกข้อมูลช่วงที่ ${snap.shiftVal}`;
-                    const dateVal = document.getElementById('input-date').value;
-                    const rec = dateVal ? getDailyRecord() : { shifts: { 1: null, 2: null, 3: null } };
-                    updateShiftPills(rec);
-                }
-
-                initToolsState();
-                if (snap.tools) {
-                    MASTER_TOOLS.forEach(t => {
-                        const item = snap.tools[t.id] || snap.tools[String(t.id)];
-                        if (item) {
-                            currentToolsState[t.id] = {
-                                receive: parseInt(item.receive, 10) || 0,
-                                deliver: parseInt(item.deliver, 10) || 0
-                            };
-                        }
-                    });
-                }
-                renderToolsList();
-
-                const sigs = snap.signatures || {};
-                setSignatureData('sender', sigs.sender || null);
-                setSignatureData('receiver', sigs.receiver || null);
-                setSignatureData('manager', sigs.manager || null);
+                applySection1Snapshot(snap);
+                applySection2Snapshot(snap.tools);
+                applySection3Snapshot(snap.signatures);
             } finally {
                 isApplyingHistory = false;
                 updateUndoRedoButtons();
             }
+        }
+
+        function syncGlobalHistoryAfterSectionChange() {
+            const snap = captureFormSnapshot();
+            if (historyIndex < 0 || !isSameSnapshot(historyStack[historyIndex], snap)) {
+                if (historyIndex < historyStack.length - 1) {
+                    historyStack = historyStack.slice(0, historyIndex + 1);
+                }
+                historyStack.push(snap);
+                if (historyStack.length > MAX_HISTORY) {
+                    historyStack.shift();
+                }
+                historyIndex = historyStack.length - 1;
+            }
+        }
+
+        function undoSection(secKey) {
+            const h = sectionHistories[secKey];
+            if (!h || h.index <= 0) {
+                updateUndoRedoButtons();
+                return;
+            }
+            h.index -= 1;
+            const snap = h.stack[h.index];
+            isApplyingHistory = true;
+            try {
+                if (secKey === 'sec1') applySection1Snapshot(snap);
+                else if (secKey === 'sec2') applySection2Snapshot(snap);
+                else if (secKey === 'sec3') applySection3Snapshot(snap);
+                syncGlobalHistoryAfterSectionChange();
+            } finally {
+                isApplyingHistory = false;
+                updateUndoRedoButtons();
+            }
+            const labelMap = {
+                sec1: 'ข้อมูลทั่วไปและช่วงเวลาเข้าเวร',
+                sec2: 'รายการเครื่องมือมาตรฐาน (64 รายการ)',
+                sec3: 'วาดลายเซ็นสดบนหน้าจอ'
+            };
+            showToast(`ย้อนกลับ (Undo) หัวข้อ${labelMap[secKey]} แล้ว`);
+        }
+
+        function redoSection(secKey) {
+            const h = sectionHistories[secKey];
+            if (!h || h.index >= h.stack.length - 1) {
+                updateUndoRedoButtons();
+                return;
+            }
+            h.index += 1;
+            const snap = h.stack[h.index];
+            isApplyingHistory = true;
+            try {
+                if (secKey === 'sec1') applySection1Snapshot(snap);
+                else if (secKey === 'sec2') applySection2Snapshot(snap);
+                else if (secKey === 'sec3') applySection3Snapshot(snap);
+                syncGlobalHistoryAfterSectionChange();
+            } finally {
+                isApplyingHistory = false;
+                updateUndoRedoButtons();
+            }
+            const labelMap = {
+                sec1: 'ข้อมูลทั่วไปและช่วงเวลาเข้าเวร',
+                sec2: 'รายการเครื่องมือมาตรฐาน (64 รายการ)',
+                sec3: 'วาดลายเซ็นสดบนหน้าจอ'
+            };
+            showToast(`ทำซ้ำ (Redo) หัวข้อ${labelMap[secKey]} แล้ว`);
         }
 
         function undoHistory() {
@@ -802,7 +953,12 @@
                 return;
             }
             historyIndex -= 1;
-            applySnapshot(historyStack[historyIndex]);
+            const targetSnap = historyStack[historyIndex];
+            applySnapshot(targetSnap);
+            pushSectionState('sec1', captureSection1Snapshot());
+            pushSectionState('sec2', captureSection2Snapshot());
+            pushSectionState('sec3', captureSection3Snapshot());
+            updateUndoRedoButtons();
             showToast("ย้อนกลับข้อมูล (Undo) แล้ว");
         }
 
@@ -812,7 +968,12 @@
                 return;
             }
             historyIndex += 1;
-            applySnapshot(historyStack[historyIndex]);
+            const targetSnap = historyStack[historyIndex];
+            applySnapshot(targetSnap);
+            pushSectionState('sec1', captureSection1Snapshot());
+            pushSectionState('sec2', captureSection2Snapshot());
+            pushSectionState('sec3', captureSection3Snapshot());
+            updateUndoRedoButtons();
             showToast("ทำซ้ำข้อมูล (Redo) แล้ว");
         }
 
@@ -825,6 +986,14 @@
             if (redoBtn) {
                 redoBtn.disabled = !(historyIndex >= 0 && historyIndex < historyStack.length - 1);
             }
+
+            ['sec1', 'sec2', 'sec3'].forEach(secKey => {
+                const h = sectionHistories[secKey];
+                const uBtn = document.getElementById(`btn-undo-${secKey}`);
+                const rBtn = document.getElementById(`btn-redo-${secKey}`);
+                if (uBtn) uBtn.disabled = !(h && h.index > 0);
+                if (rBtn) rBtn.disabled = !(h && h.index >= 0 && h.index < h.stack.length - 1);
+            });
         }
 
         function initToolsState() {
@@ -1431,7 +1600,7 @@
                 icon.className = isSaved ? "w-2.5 h-2.5 rounded-full bg-emerald-500" : "w-2.5 h-2.5 rounded-full bg-gray-300";
             });
             document.getElementById('saved-shifts-count').textContent = `บันทึกแล้ว ${count}/3 ช่วงเวลา`;
-            document.getElementById('header-status-badge').textContent = `บันทึก ${count}/3 กะ`;
+            document.getElementById('header-status-badge').textContent = 'Refresh';
         }
 
         function quickSelectShift(shiftNum) {
