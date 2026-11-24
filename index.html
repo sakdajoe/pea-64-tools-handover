@@ -1101,17 +1101,24 @@
 
         // ล้างค่าส่วนหัวเฉพาะช่องที่ไม่ใช่ "สาขา" (ใช้เมื่อเปลี่ยนไปเลือกวันที่อื่นที่ยังไม่มีข้อมูลบันทึก)
         function resetUnsavedDateFieldsKeepBranch_() {
-            ['input-vehicle-type', 'input-license', 'input-sender', 'input-receiver', 'input-manager'].forEach(selId => {
+            const fieldPairs = [
+                ['input-vehicle-type', 'custom-vehicle-type'],
+                ['input-license', 'custom-license'],
+                ['input-sender', 'custom-sender'],
+                ['input-receiver', 'custom-receiver'],
+                ['input-manager', 'custom-manager']
+            ];
+
+            fieldPairs.forEach(([selId, inpId]) => {
                 const sel = document.getElementById(selId);
-                if (sel) sel.value = '';
-            });
-            ['custom-vehicle-type', 'custom-license', 'custom-sender', 'custom-receiver', 'custom-manager'].forEach(inpId => {
                 const inp = document.getElementById(inpId);
+                if (sel) sel.value = '';
                 if (inp) {
                     inp.value = '';
                     inp.classList.add('hidden');
                 }
             });
+
             setSignatureData('sender', null);
             setSignatureData('receiver', null);
             setSignatureData('manager', null);
@@ -1491,19 +1498,30 @@
         async function loadDayData(showNotify = false, shouldRecord = false) {
             applyMaxDateConstraint();
             const dateVal = document.getElementById('input-date').value;
-            const licenseVal = getFieldValue('input-license', 'custom-license');
             document.getElementById('thai-date-preview').textContent = `วันที่: ${formatThaiDate(dateVal)}`;
 
             if (!dateVal) {
+                resetUnsavedDateFieldsKeepBranch_();
                 updateShiftPills({ shifts: { 1: null, 2: null, 3: null } });
                 onShiftChange(false);
                 if (shouldRecord) recordHistory();
                 return;
             }
 
-            let record = getDailyRecord();
+            // ค้นหา record ของวันที่เลือกก่อนโดยไม่ให้ทะเบียนเก่าค้างมาปะปน
+            let record = findLocalRecordForDate_(dateVal, '');
+            if (!record) {
+                const currentLic = getFieldValue('input-license', 'custom-license');
+                if (currentLic && currentLic !== '-') {
+                    const rawExact = localStorage.getItem(getRecordKey(dateVal, currentLic));
+                    if (rawExact) {
+                        try { record = JSON.parse(rawExact); } catch (e) {}
+                    }
+                }
+            }
+
             const hasSavedRecord = Boolean(
-                (record && record.shifts && (record.shifts['1'] || record.shifts['2'] || record.shifts['3']))
+                record && record.shifts && (record.shifts['1'] || record.shifts['2'] || record.shifts['3'])
             );
             const lastHeader = getLastSavedHeader_();
 
@@ -1512,7 +1530,7 @@
                 updateShiftPills(record);
                 onShiftChange(false);
             } else {
-                // วันที่นี้ยังไม่เคยบันทึก: ล้าง ประจำรถ, หมายเลขทะเบียน, ผจก.ลงนาม และลายเซ็น ให้เลือกใหม่ (คงสาขาเดิมไว้)
+                // วันที่ยังไม่เคยบันทึก: รีเซ็ต ประจำรถ, หมายเลขทะเบียน, ผจก.ลงนาม, ผู้ส่งมอบ, ผู้รับมอบ และลายเซ็น (คงสาขาเดิมไว้)
                 resetUnsavedDateFieldsKeepBranch_();
                 updateShiftPills({ shifts: { 1: null, 2: null, 3: null } });
                 onShiftChange(false);
@@ -1530,8 +1548,6 @@
                 const activeLic = getFieldValue('input-license', 'custom-license');
                 if (activeLic && activeLic !== '-') {
                     url.searchParams.set('license', activeLic);
-                } else if (licenseVal && licenseVal !== '-') {
-                    url.searchParams.set('license', licenseVal);
                 }
 
                 const res = await fetch(url.toString(), { method: 'GET' });
@@ -1551,12 +1567,25 @@
                     return;
                 }
 
-                const latestLocal = getDailyRecord();
-                const syncedRecord = mergeRemoteShiftsToRecord_(latestLocal, data.shifts, dateVal, activeLic !== '-' ? activeLic : (data.license || ''));
-                const targetKey = getRecordKey(dateVal, syncedRecord.license || activeLic);
+                const latestLocal = record || {
+                    branch: getFieldValue('input-branch', 'custom-branch'),
+                    vehicleType: '',
+                    license: '',
+                    date: dateVal,
+                    manager: '',
+                    managerSignature: null,
+                    shifts: { 1: null, 2: null, 3: null }
+                };
+                const syncedRecord = mergeRemoteShiftsToRecord_(
+                    latestLocal,
+                    data.shifts,
+                    dateVal,
+                    activeLic && activeLic !== '-' ? activeLic : (data.license || '')
+                );
+                const targetKey = getRecordKey(dateVal, syncedRecord.license || '-');
                 localStorage.setItem(targetKey, JSON.stringify(syncedRecord));
 
-                applyRecordToHeaderUI_(syncedRecord, lastHeader);
+                applyRecordToHeaderUI_(syncedRecord, null);
                 updateShiftPills(syncedRecord);
                 onShiftChange(false);
                 if (shouldRecord || showNotify) recordHistory();
